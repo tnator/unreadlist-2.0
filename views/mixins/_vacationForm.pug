@@ -1,0 +1,36 @@
+mixin vacationForm(vacationWeek = {})
+
+    form.container.py-2(action=`/vacationEdit/${vacationWeek._id || ''}` method="POST" class="card")
+        .form-floating.mb-3
+            input#weekNum.form-control(type="number" name="weekNum" placeHolder="weekNum" value=vacationWeek.weekNum)
+            label.form-label(for="weekNum") Week Number
+        .form-floating.mb-3
+            //- input#startDate.form-control(type="date" name="startDate" placeHolder="startDate" value=vacationWeek.startDate)
+            input#startDate.form-control(type="text" onfocus="this.type='date'" name="startDate" placeHolder="startDate" value=vacationWeek.startDate)
+            label.form-label(for="startDate") Start Date
+        .form-floating.mb-3
+            //- input#endDate.form-control(type="date" name="endDate" placeHolder="endDate" value=vacationWeek.endDate)
+            input#endDate.form-control(type="text" onfocus="this.type='date'" name="endDate" placeHolder="endDate" value=vacationWeek.endDate)
+            label.form-label(for="endDate") End Date
+        .input-group.mb-3 
+            span#slotA.input-group-text Slot A
+            input(type="text" name="slotA" placeHolder="open" maxlength="3" value=vacationWeek.slotA)
+        .input-group.mb-3 
+            span#slotB.input-group-text Slot B
+            input(type="text" name="slotB" placeHolder="open" maxlength="3" value=vacationWeek.slotB)
+        .input-group.mb-3 
+            span#slotC.input-group-text Slot C
+            input(type="text" name="slotC" placeHolder="open" maxlength="3" value=vacationWeek.slotC)
+        .input-group.mb-3 
+            span#slotD.input-group-text Slot D
+            input(type="text" name="slotD" placeHolder="open" maxlength="3" value=vacationWeek.slotD)
+        .input-group.mb-3 
+            span#slotE.input-group-text Slot E
+            input(type="text" name="slotE" placeHolder="open" maxlength="3" value=vacationWeek.slotE)
+        .input-group.mb-3 
+            span#slotF.input-group-text Slot F
+            input(type="text" name="slotF" placeHolder="open" maxlength="3" value=vacationWeek.slotF)
+        .form-floating.mb-3
+            input#notes.form-control(type="text" name="notes" placeHolder="notes" value=vacationWeek.notes)
+            label.form-label(for="notes") Notes
+        input.btn.btn-warning(type="submit" value="Save Vacation" class="button")

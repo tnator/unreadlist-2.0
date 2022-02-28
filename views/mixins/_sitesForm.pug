@@ -1,0 +1,56 @@
+mixin sitesForm(site = {})
+
+    form.container(action=`/siteAdd/${site._id || ''}` method='POST' enctype='multipart/form-data')
+        .form-group.mb-3
+            label.form-label(for='riaDivision') Division:
+            select.form-select(type='text', name='riaDivision' value=site.riaDivision)
+                option(value='ocala') Ocala
+                option(value='daytona') Daytona 
+                option(value='all') Ocala/Daytona 
+        .form-group.mb-3
+            label.form-label(for='facilityOrganization') Organization:
+            select.form-select(type='text', name='facilityOrganization' value=site.facilityOrganization)
+                option(value='hca') HCA
+                option(value='advent') Advent
+                option(value='bravera') Bravera
+                option(value='radAssOcala') RAO
+                option(value='radAssDaytona') RAD 
+                option(value='none') No affiliation
+        .form-group.mb-3
+            label.form-label(for="facilityName") Facility Name:
+            input.form-control(type="text" name="facilityName" value=site.facilityName)
+        .form-group.mb-3
+            label.form-label(for='facilityType') Facility Type:
+            select.form-select(type='text', name='facilityType')
+                option(value='hospital') Hospital/Medical Center
+                option(value='freestandingER') Freestanding ER/Clinic
+                option(value='imagingCenter') Imaging Center
+                option(value='medicalOffice') Medical Office
+                option(value='operations') Operations
+        //- Image upload
+        .form-group.mb-3 
+            label(for="photo") Photo 
+            input(type="file" name="photo" id="photo" accept="image/gif, image/png, image/jpeg")
+            if site.photo 
+                img(src=`/uploads/${site.photo}`, alt=site.facilityName width=200)
+        //- address, latitude, and longitude
+        .form-group.mb-3
+            label.form-label(for="address") Address
+            input.form-control(type="text" id="address" name="location[address]" value=(site.location && site.location.address))
+        .form-group.mb-3
+            //- Longitude needs to be first so that is why its [0]. Mongo db storage issue
+            label.form-label(for="lng") Address Longitude 
+            input.form-control(type="text" id="lng" name="location[coordinates][0]"
+                value=(site.location && site.location.coordinates[0]) required)
+        .form-group.mb-3
+            label.form-label(for="lat") Address Latitude 
+            input.form-control(type="text" id="lat" name="location[coordinates][1]"
+                value=(site.location && site.location.coordinates[1]) required)
+        - const tagChoices = ['Hospital', 'Imaging Center', 'Freestanding ER', 'Medical Clinic', 'Operations Center', 'Surgical Center']
+        - const tags = site.tags || []
+        ul.tags
+        each tag in tagChoices
+            .row
+                input(type="checkbox" id=tag value=tag name="tags" checked=(tags.includes(tag)))
+                label(for=tag) #{tag}
+        button.btn.btn-primary(type='submit') Submit

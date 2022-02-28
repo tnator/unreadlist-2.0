@@ -1,0 +1,11 @@
+mixin resourcesDisplay(item = {})
+
+    .row
+        a.w-50.list-group-item.list-group-item-action(href=item.url)= item.labelName
+        if user
+        .col-2.center
+            .row.h-100
+                a.col.center.fs-4(href=`/resources/${item._id}/edit`)
+                    i.bi.bi-pencil-square
+                a.col.center.fs-4(href=`/resources/${item._id}/delete`)
+                    i.bi.bi-x-square

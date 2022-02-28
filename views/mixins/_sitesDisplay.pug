@@ -1,0 +1,40 @@
+mixin sitesDisplay(site = {})
+
+    .card.m-3.p-0(style="width: 25rem; height: 40rem;")
+        img.card-img-top(src=`/uploads/${site.photo}` alt=site.facilityName)
+        .card-body.row 
+            .col
+                a(href=`/site/${site.slug}`)
+                    h5.card-title= site.facilityName
+                h6.card-subtitle= site.facilityOrganization.toUpperCase() 
+                p.card-text= site.location.address
+            //- if uberUser
+            //- pre= h.dump(site.author)
+            if user
+                .site__action.site__action--heart 
+                    form.heart(method="POST" action=`/api/sites/${site._id}/heart`)
+                        //- following code makes hearts red if hearted by user or white if not....cool a s
+                        - const heartStrings = user.hearts.map(obj => obj.toString())
+                        //- pre= h.dump(heartStrings)
+                        - const heartClass = heartStrings.includes(site._id.toString()) ? 'text-danger' : ''
+                        button.form-control(type="submit" name="heart" class=heartClass)
+                            i.bi.bi-heart
+                            //- != h.icon('heart')
+            if user && site.author.equals(user._id)
+                .col
+                    a(href=`/sites/${site._id}/edit`)
+                        i.bi.bi-pencil-square
+                    a.mx-2(href=`/sites/${site._id}/delete`)
+                        i.bi.bi-x-square
+        if site.tags
+        .card-footer
+            each tag in site.tags 
+                a.p-1(href=`/tags/${tag}`)
+                    span ##{tag}
+        
+            //- ul
+            //-     each tag in site.tags
+                //- li.tag
+                //-     a(href=`/tags/${tag}`)
+                //-     span  ##{tag}
+

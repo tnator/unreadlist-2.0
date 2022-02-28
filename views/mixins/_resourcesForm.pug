@@ -1,0 +1,16 @@
+mixin resourcesForm(resourceItem = {})
+    h2= title
+    form.container.p-3(action=`/resourceEdit/${resourceItem._id || ''}` method="POST" class="card")
+        .mb-4
+            label.form-label.fw-bold(for="labelName") Label / Name:
+            input.form-control(type="text" id="labelName" name="labelName" placeHolder="Enter url/link name..." value=resourceItem.labelName)
+            
+        .mb-4
+            label.form-label.fw-bold(for="url") URL:
+            input.form-control(type="text" id="url" name="url" placeHolder="Enter url..." value=resourceItem.url)
+            
+        .mb-4
+            label.form-label.fw-bold(for="notes") Notes:
+            input.form-control(type="text" id="notes" name="notes" placeHolder="Enter notes..." value=resourceItem.notes)
+            
+        input.btn.btn-success(type="submit" value="Save Resource" class="button")

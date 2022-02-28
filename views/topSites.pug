@@ -1,0 +1,21 @@
+extends layout 
+
+block content 
+    h4= title 
+    h2 Top #{sites.length} Stores
+    table.table 
+        thead 
+            td photo 
+            td ranking 
+            td Facility Name 
+            td reveiws 
+            td Average Rating
+        each site, i in sites 
+            tr 
+                td
+                    a(href=`/site/${site.slug}`)
+                        img(width=200 src=`/uploads/${site.photo || 'site.png'}` alt=site.name)
+                td  #{i + 1}
+                td: a(href=`/sites/${site.slug}`)= site.name 
+                td= site.reviews.length 
+                td #{Math.round(site.averageRating * 10) / 10} / 5

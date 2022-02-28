@@ -1,0 +1,14 @@
+extends layout 
+
+block content
+    //- No action means form will post to itself
+    form.container(method='POST')
+        .my-3
+            h5.m-0 Reset Your Password!
+        .mb-3
+            label.form-label(for="password") Password 
+            input.form-control(type="password" name="password")
+        .mb-3 
+            label.form-label(for="password-confirm") Confirm Password 
+            input.form-control(type="password" name="password-confirm")
+        input.form-input.btn.btn-danger(type="submit" value="Reset Password")

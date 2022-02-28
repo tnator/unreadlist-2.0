@@ -1,0 +1,9 @@
+extends layout 
+
+include mixins/_contactForm
+
+block content
+    .container 
+        .row
+            h4.m-2.text-left= title 
+            +contactForm(contact)

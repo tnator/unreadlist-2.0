@@ -1,0 +1,13 @@
+extends layout 
+
+include mixins/_loginPassportForm
+include mixins/_loginForgot
+
+block content
+    .container.my-4
+        .row 
+            h3= title
+        .row
+            +loginPassportForm()
+        .row
+            +forgotForm()

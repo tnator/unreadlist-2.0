@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+    
+    .inner
+        .container-fluid.m-0.p-0
+            .row.m-0.p-2.bg-warning
+                .start
+                    h4.text-light.me-3= title
+        .container.map 
+            .row.py-3.autocomplete 
+                input.autocomplete__input(type="text" placeholder="Search for Anything" name="geolocate")
+            .row#map.h-50
+                p Loading Map....

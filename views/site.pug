@@ -1,0 +1,32 @@
+extends layout 
+
+include mixins/_siteReviewForm
+include mixins/_siteReview
+
+block content
+    .container 
+        img(src=`/uploads/${site.photo || 'store.png'}`)
+        h2 
+            a(href=`/sites/${site.slug}`) #{site.facilityName}
+    .container 
+        //- INSERT img for static Google maps
+        img(src=h.staticMap(site.location.coordinates))
+        p=site.location.address
+    .container 
+        if site.tags 
+            ul.tags 
+                each tag in site.tags 
+                    li.tag 
+                        a(href=`/tags/${tag}`)
+                            span ##{tag}
+    .container 
+        if user 
+            +siteReviewForm(site)
+    
+    .container 
+        if site.reviews 
+            .reviews
+                //- pre=h.dump(site.reviews)
+                each review in site.reviews 
+                    .review 
+                        +siteReview(review)

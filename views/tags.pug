@@ -1,0 +1,17 @@
+extends layout 
+
+include mixins/_sitesDisplay
+
+block content 
+
+    .container 
+        h2 #{tag || 'Tags'}
+        .row
+            each tag in tags
+                a.px-2(href=`/tags/${tag._id}` class=(tag._id === tag ? 'tag__link--active' : ''))
+                    //- span= tag._id
+                    span.p-1 ##{tag._id}
+                    span (#{tag.count})
+        .container
+            each site in sites 
+                +sitesDisplay(site)

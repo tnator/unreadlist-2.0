@@ -1,0 +1,42 @@
+extends layout 
+
+include mixins/_contactCard
+
+block content 
+    .container-fluid.m-0.p-0
+        .row.m-0.p-2.bg-primary.bg-gradient
+            .center
+                i.bi.bi-telephone-outbound-fill.fs-4.text-light.pe-3
+                h5.text-light.me-3= title
+                form.m-0.me-3.w-100.search
+                    input.form-control.search__input(type="text" placeholder="Search contacts..." name="contactSearch")
+                    
+                    //- NEED TO FIGURE OUT HOW TO DROP DOWN SEARCH BOX/DIV
+                    //- container.search__results
+                if user
+                    a.add(href='/contactAdd')
+                        i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
+        
+        //- .row.m-0.w-100.border-top
+        //-     .list-group.list-group-flush.p-0
+        //-         each site in siteArray
+        //-             .mb-0.list-group-item.list-group-item-action.text-primary.fs-5(type="button" data-bs-toggle='collapse' data-bs-target=`#${site[1]}`)= site[0]
+        //-             .collapse.fs-6(id=site[1])
+        //-                 //- .list-group.list-group-flush
+        //-                 each contact in contacts 
+        //-                     if contact.acronym === site[1]                    
+        //-                         +contactCard(contact)
+
+
+        .row.m-0.w-100.border-top
+            .col-12.col-md-6
+                .list-group.list-group-flush.p-0
+                    each site in siteArray
+                        .mb-0.list-group-item.list-group-item-action.text-primary.fs-5(type="button" data-bs-toggle='collapse' data-bs-target=`#${site[1]}`)= site[0]
+                        .collapse.fs-6(id=site[1])
+                            //- .list-group.list-group-flush
+                            each contact in contacts 
+                                if contact.acronym === site[1]                    
+                                    +contactCard(contact)
+            .col-4
+                .list-group

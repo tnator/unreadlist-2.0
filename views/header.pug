@@ -1,0 +1,51 @@
+nav.navbar.navbar-expand-lg.navbar-light.p-0.gray-100.border-bottom
+  .container
+    a.navbar-brand(href='/')
+      .center
+        //- i.fas.fa-radiation-alt.fa-2x.icon
+        //- i.fa-solid.fa-dragon.fa-lg.icon
+        i.fa-duotone.fa-biohazard.fa-xl
+        //- i.bi.bi-speedometer2.fa-2x.iconStart
+        #radase.m-0.px-3.iconStart Radase
+          //- span.iconEnd= title
+        //- h4#mobileTitle= title
+    button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarToggler', aria-controls='navbarToggler', aria-expanded='false', aria-label='Toggle navigation')
+      span.navbar-toggler-icon.custom-toggler
+    #navbarToggler.collapse.navbar-collapse
+      ul.navbar-nav.me-auto.mb-2.mb-lg-0
+        li.nav-item
+          a.nav-link(href='/') Home
+        li.nav-item
+          a.nav-link(href='/contacts') Contacts
+        if user
+          li.nav-item
+            a.nav-link(href='/vacation') Vacation
+        if user
+          li.nav-item
+            a.nav-link(href='/honeyBadger')
+              i.fa-duotone.fa-badger-honey.fa-lg
+        li.nav-item
+          a.nav-link(href='/resources') Resources
+        li.nav-item
+          a.nav-link(href='/sites') Sites
+
+        if user
+          a.heart.p-2.text-danger(href="/hearts")
+            i.fa-solid.fa-heart.fa-lg.mx-1
+            span.heart-count #{user.hearts && user.hearts.length}
+        
+        if !user
+          li.nav-item 
+            a.nav-link(href='/registerPassport') Register
+      if user
+        a.btn.btn-secondary.me-3(href='/logoutPassport') Log Out
+      else
+        a.btn.btn-secondary.me-3(href='/loginPassport') Log In
+      
+      if user
+        //- THIS BELOW IF FROM WES BOS COURSE
+        //- img.avatar(src=user.gravatar)
+        a(href='/profileEdit')
+          i.fa-duotone.fa-user-large.fa-xl
+
+        

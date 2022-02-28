@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+    .container-fluid.m-0.p-0
+        .row.m-0.p-2.bg-primary.bg-gradient
+            .center
+                i.fa-light.fa-badger-honey.fs-4.text-light.pe-3
+                h5.text-light.me-3= title
+                //- ONLY VISIBLE IF LOGGED IN AND ADMIN
+                if user
+                    a.add(href='/honeyBadgerAdd')
+                        i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
+        //- CREATE HONEY BADGERS SCHEDULE BELOW HERE
+        .row

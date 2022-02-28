@@ -1,0 +1,21 @@
+extends layout 
+
+block content
+
+    .container-fluid.m-0.p-0 
+        .row.m-0.p-2.bg-primary.bg-gradient
+            .center
+                i.fa-solid.fa-address-card.fs-4.text-light.pe-3
+                h5.text-light.me-3= title 
+
+
+    form.container(action="/profileEdit" method="POST")
+        .row.center
+            .mb-3
+                label.form-label(for="name") Name 
+                input.form-control(type="text" name="name" value=user.name)
+            .mb-3
+                label.form-label(for="email") Email Address
+                input.form-control(type="text" name="email" value=user.email)
+            
+            input.btn.btn-warning(type="submit" value="Update Profile")

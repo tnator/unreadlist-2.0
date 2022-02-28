@@ -1,0 +1,37 @@
+extends layout 
+
+include mixins/_vacationDisplay
+
+block content
+    .container-fluid.m-0.p-0
+        .row.m-0.p-2.bg-primary.bg-gradient
+            .center
+                i.fa-light.fa-earth-americas.fs-4.text-light.pe-3
+                h5.text-light.me-3= title
+                //- ONLY VISIBLE IF LOGGED IN AND ADMIN
+                if user
+                    a.add(href='/vacationAdd')
+                        i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
+        .row.w-100.m-0.p-0.bg-radblack.text-radwhite.text-center
+            .col-1.m-0.border-end.border-bottom.py-2.px-0.center.text-shrink #
+            .col-1.m-0.border-end.border-bottom.py-2.px-0.center.text-shrink
+                i.bi.bi-arrow-bar-right
+            .col-1.m-0.border-end.border-bottom.py-2.px-0.center.text-shrink
+                i.bi.bi-arrow-bar-left
+            .col-9.col-lg-6.m-0.p-0.center
+                .row.w-100.m-0.p-0
+                    .col-2.m-0.p-0.text-shrink A
+                    .col-2.m-0.p-0.text-shrink B
+                    .col-2.m-0.p-0.text-shrink C
+                    .col-2.m-0.p-0.text-shrink D
+                    .col-2.m-0.p-0.text-shrink E
+                    .col-2.m-0.p-0.text-shrink F
+            .notesCol.col-lg-3.align-self-center Notes
+        each vacationItem in vacation
+            +vacationDisplay(vacationItem)
+        //- ONLY VISIBLE IF LOGGED IN AND ADMIN
+        if user
+            .row.w-100.m-0.mt-3
+                .col-4
+                    .list-group.totalsContainer.p-0
+                .col-8

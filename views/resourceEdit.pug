@@ -1,0 +1,11 @@
+extends layout 
+
+include mixins/_resourceForm
+
+block content
+    h2= title
+    .container-fluid.m-0.p-0
+        .row.m-0.p-2.bg-warning
+            .start
+                h4.me-3.text-light= title 
+        +resourcesForm(resource)

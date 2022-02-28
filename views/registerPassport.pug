@@ -1,0 +1,36 @@
+extends layout 
+
+block content 
+    .container
+        .row 
+            h3= title 
+        .row 
+            //- form.container.py-2(action="/registerPassport" method="POST")
+            //-     .form-floating.mb-3
+            //-         label.form-label(for="name") Name
+            //-         input.form-control(type="text" name="name")
+            //-     .form-floating.mb-3
+            //-         label.form-label(for="email") Email
+            //-         input.form-control(type="email" name="email")
+            //-     .form-floating.mb-3
+            //-         label.form-label(for="password") Password
+            //-         input.form-control(type="password" name="password")
+            //-     .form-floating.mb-3
+            //-         label.form-label(for="password-confirm") Confirm Password
+            //-         input.form-control(type="password-confirm" name="password-confirm")
+            //-     input.form-input.btn.btn-success(type="submit" value="Register ->")
+
+            form.container(method="POST" action="/registerPassport")
+                .form-group.mb-3 
+                    label.form-label(for="name") Name 
+                    input.form-control(type="text" placeholder="Name" name="name")
+                .form-group.mb-3
+                    label.form-label(for="email") Email
+                    input.form-control(type="email" placeholder="Email" name="email")
+                .form-group.mb-3
+                    label.form-label(for="password") Password
+                    input.form-control(type="password" placeholder="Password" name="password")
+                .form-group.mb-3
+                    label.form-label(for="password-confirm") Confirm Password
+                    input.form-control(type="password" placeholder="Confirm Password" name="password-confirm")
+                input.form-input.btn.btn-success(type="submit" value="Register ->")

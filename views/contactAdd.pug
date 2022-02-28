@@ -1,0 +1,8 @@
+extends layout 
+
+include mixins/_contactForm
+
+block content
+    .inner
+        h4.m-2.text-center= title
+        +contactForm()

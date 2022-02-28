@@ -1,0 +1,29 @@
+extends layout 
+
+include mixins/_sitesDisplay
+include mixins/_pagination
+
+block content 
+
+    //- nav
+    //-     form.search
+    //-         input.form-control(type="text" placeholder="Adven, HCA, ..." name="search")
+    //-         .search__results
+
+    .container-fluid
+        .row.m-3
+            .col
+                h4.pageTitle= title
+                
+                if user
+                    a(href="/siteAdd")
+                        i(style="font-size: 1.5rem;").bi.bi-plus-square
+            .col 
+                a(href="/map") Map
+            .col 
+                a(href="/top") Top Sites by Review rating
+        .row.d-flex.flex-row
+            each site in sites
+                +sitesDisplay(site)
+        .row 
+            +pagination(page, pages, count)

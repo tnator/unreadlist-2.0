@@ -1,0 +1,19 @@
+extends layout 
+
+include mixins/_vacationForm
+
+block content
+
+    .container-fluid.m-0.p-0 
+        .row.m-0.p-2.bg-primary.bg-gradient
+            .center
+                i.fa-light.fa-earth-americas.fs-4.text-light.pe-3
+                h5.text-light.me-3= title 
+        +vacationForm(vacationWeek)
+    //- .container 
+    //-     .row.text-center.p-3
+    //-         .col 
+    //-             h2.mb-0= title
+    //-         .col    
+    //-             a.btn.btn-outline-secondary(href='/vacation') Vacation Display     
+    //-     +vacationForm(vacationWeek)

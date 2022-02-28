@@ -1,0 +1,12 @@
+extends layout 
+
+include mixins/_sitesForm
+
+block content
+
+    .container-fluid
+        .row.m-3
+            .start
+                h4.pageTitle= title
+        .row
+            +sitesForm(site)
