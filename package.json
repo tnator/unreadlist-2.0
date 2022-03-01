@@ -1,7 +1,12 @@
 {
   "name": "radase-bootstrap",
   "version": "1.0.0",
+  "private": true,
   "main": "start.js",
+  "engines": {
+    "node": "= 16.8.0"
+  },
+
   "scripts": {
     "start": "node ./start.js"
   },

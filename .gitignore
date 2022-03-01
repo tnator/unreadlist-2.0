@@ -1,9 +1,11 @@
+.vscode/
 node_modules/
 .DS_Store
 *.log
 .idea
 haters/
 variables.env
-variables.env.now
+variables.env.vercel
 Z-NOTES & TO Do.txt
 Z-TRASH/
+.vercel

@@ -13,7 +13,7 @@ const jimp = require('jimp');
 const uuid = require('uuid');
 const { rawListeners } = require('../models/userPassportModel');
 const { Store } = require('express-session');
-const router = require('../routes/routes');
+const router = require('../routes');
 const { response } = require('express');
 // const twilio = require('twilio');
 
