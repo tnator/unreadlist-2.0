@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // CREATES URL FRIENDLY DATA
-const slug = require('slugs');
-const { LibManifestPlugin } = require('webpack');
+// const slug = require('slugs');
+// const { LibManifestPlugin } = require('webpack');
 
 // CONTACT TYPES
 // -main
