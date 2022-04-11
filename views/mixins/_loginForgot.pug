@@ -1,9 +1,10 @@
 mixin forgotForm()
 
     form.container(method='POST' action='/account/forgot')
+        .mb-1.d-flex.flex-row.align-items-center
+            h5.m-0 Forgot Password
+            i.mx-2.fa-duotone.fa-face-scream.fs-4
         .mb-3
-            h5.m-0 Forgot Password!
-        .mb-3
-            label.form-label(for="email") Email 
-            input.form-control(type="email" name="email")
+            label.form-label(for="emailPrimary")
+            input.form-control(type="emailPrimary" name="emailPrimary" placeholder="Enter Email...")
         input.form-input.btn.btn-danger(type="submit" value="Send a Reset")

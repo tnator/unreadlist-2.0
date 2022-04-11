@@ -1,9 +1,12 @@
 mixin loginPassportForm()
+
     form.container.py-2(action="/loginPassport" method="POST")
+        .mb-1
+            h5.mb-0.text-dark= title
         .mb-3
-            label.form-label(for="email") Email Address
-            input.form-control(type="email" name="email")
+            label.form-label(for="emailPrimary")
+            input.form-control(type="emailPrimary" name="emailPrimary" placeholder="Enter Email...")
         .mb-3
-            label.form-label(for="password") Password
-            input.form-control(type="password" name="password")
-        input.form-input.btn.btn-success(type="submit" value="Log In ->")
+            label.form-label(for="password")
+            input.form-control(type="password" name="password" placeholder="Enter password...")
+        input.form-input.btn.btn-dark(type="submit" value="Log In ->")

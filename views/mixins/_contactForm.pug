@@ -11,10 +11,9 @@ mixin contactForm(contact = {})
                         input#division.form-check-input(type="checkbox" value=division name="division" checked=(divisionTag.includes(division)))
                         label.form-check-label(for=division)= division
         .mb-4
-            label.form-label.fw-bold(for="siteDataList") Site name:
-            input.form-control(list="siteDataListOptions", id="siteDataList", name='site', placeholder="Search sites...", aria-label="Site selection" selected=contact.site)
-            datalist#siteDataListOptions
-                //- option(value=contact.site)
+            label.form-label.fw-bold(for="site") Site name:
+            select.form-control(id="site", name='site', placeholder="Search sites...", aria-label="Site selection")
+                option(selected)= contact.site
                 option(value="Advanced Imaging Center") Advanced Imaging (AI)
                 option(value="Advent Hospital") Advent Hospital (AH)
                 option(value="Belleview ER") Belleview ER (Bravera)
@@ -35,10 +34,9 @@ mixin contactForm(contact = {})
                 option(value="Women's Imaging Center") Women's Imaging Center (WIC)
 
         .mb-4
-            label.form-label.fw-bold(for='acronymDataList') Site acronym:
-            input.form-control(list='acronymDataListOptions' id="acronymDataList" name='acronym' placeholder="Search acronyms..." aria-label="Acronym selection" selected=contact.acronym)
-            datalist#acronymDataListOptions
-                //- option(value=contact.acronym)
+            label.form-label.fw-bold(for='acronym') Site acronym:
+            select.form-control(id="acronym" name='acronym' placeholder="Search acronyms..." aria-label="Acronym selection")
+                option(selected)= contact.acronym
                 option(value="AI") AI (Advanced Imaging)
                 option(value="AH") AH (Advent Hospital)
                 option(value="BVER") BVER (Advent Belleview ER)
@@ -63,8 +61,16 @@ mixin contactForm(contact = {})
             
         .mb-4
             label.form-label.fw-bold(for="phoneNum") Phone number:
-            input.form-control(type="tel" id="phoneNum" name="phoneNum" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$" placeholder="( _ _ _-_ _ _-_ _ _ _ )" value=contact.phoneNum)
-            
+            input.form-control.phone-number(type="tel" id="phoneNum" name="phoneNum" minlength="12" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$" onkeydown="phoneNumberFormatter()" placeholder="_ _ _-_ _ _-_ _ _ _" value=contact.phoneNum)
+        
+
+        //- .mb-4 
+        //-     label.form-label.fw-bold(for="phoneNum") Phone Number Intl: 
+        //-     input.form-control(type="tel" id="phoneNum" name="phoneNum" )
+        //-  Look into twilio intl-tel-input plugin for Internation format
+        
+
+
         .mb-4
             - const tags = ['main', 'er', 'stroke', 'readingroom', 'radiology', 'it', 'staff', 'unit', 'administration']
             - const tagType = contact.tag || []

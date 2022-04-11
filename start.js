@@ -18,10 +18,12 @@ db.on('error', (err) => {
 require('./models/contactModel');
 require('./models/vacationModel');
 require('./models/resourceModel');
-require('./models/userModel');
+// require('./models/userModel');
 require('./models/userPassportModel');
 require('./models/siteModel');
 require('./models/reviewModel');
+require('./models/quoteModel');
+require('./models/honeyBadgerModel');
 
 // START APP !!!
 const app = require('./app');

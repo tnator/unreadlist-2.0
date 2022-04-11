@@ -1,0 +1,10 @@
+mixin quoteForm(quote = {})
+
+    form.container.p-3(action='/quoteSave' method="POST")
+        .mb-4 
+            label.form-label(for="quote") Quote
+            input.form-control(type="text" id="quote" name="quote" placeholder="Enter quote..." value=quote.quote)
+        .mb-4 
+            label.form-label(for="author") Author
+            input.form-control(type="text" id="author" name="author" placeHolder="Enter author..." value=quote.author)
+        input.btn.btn-danger(type="submit" value="Save Quote" class="button")

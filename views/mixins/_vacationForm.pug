@@ -1,35 +1,69 @@
 mixin vacationForm(vacationWeek = {})
 
-    form.container.py-2(action=`/vacationEdit/${vacationWeek._id || ''}` method="POST" class="card")
+    - if (vacationWeek.startDate && vacationWeek.endDate) {
+    -   var startDate = vacationWeek.startDate;
+    -   var offset = startDate.getTimezoneOffset() / 60;
+    -   var hours = startDate.getHours();
+    -   startDate.setHours(hours - offset);
+    -   startDate.setMinutes(00)
+    -   var isoStart = startDate.toISOString();
+    -   var start = isoStart.slice(0,-5);
+    -
+    -   var endDate = vacationWeek.endDate;
+    -   var offset = endDate.getTimezoneOffset() / 60;
+    -   var hours = endDate.getHours();
+    -   endDate.setHours(hours - offset);
+    -   var isoEnd = endDate.toISOString();
+    -   var end = isoEnd.slice(0,-5);
+    - }
+    - var dateStart = new Date();
+    - var offset = dateStart.getTimezoneOffset() / 60;
+    - dateStart.setFullYear(2023);
+    - dateStart.setHours(0 - offset);
+    - dateStart.setMinutes(01);
+    - var dateStart = dateStart.toISOString();
+    - var dateStart = dateStart.slice(0,-5);
+    - 
+    - var dateEnd = new Date();
+    - var offset2 = dateEnd.getTimezoneOffset() / 60;
+    - dateEnd.setFullYear(2023);
+    - dateEnd.setHours(23 - offset2);
+    - dateEnd.setMinutes(59);
+    - var dateEnd = dateEnd.toISOString();
+    - var dateEnd = dateEnd.slice(0,-5);
+
+    form.container.my-3.py-2(action=`/vacationEdit/${vacationWeek._id || ''}` method="POST" class="card")
         .form-floating.mb-3
             input#weekNum.form-control(type="number" name="weekNum" placeHolder="weekNum" value=vacationWeek.weekNum)
             label.form-label(for="weekNum") Week Number
+
+
         .form-floating.mb-3
-            //- input#startDate.form-control(type="date" name="startDate" placeHolder="startDate" value=vacationWeek.startDate)
-            input#startDate.form-control(type="text" onfocus="this.type='date'" name="startDate" placeHolder="startDate" value=vacationWeek.startDate)
+            input#startDate.form-control(type="datetime-local" onfocus="this.type='date'" name="startDate" placeHolder="startDate" value=start || dateStart)
             label.form-label(for="startDate") Start Date
         .form-floating.mb-3
-            //- input#endDate.form-control(type="date" name="endDate" placeHolder="endDate" value=vacationWeek.endDate)
-            input#endDate.form-control(type="text" onfocus="this.type='date'" name="endDate" placeHolder="endDate" value=vacationWeek.endDate)
+            input#endDate.form-control(type="datetime-local" onfocus="this.type='date'" name="endDate" placeHolder="endDate" value=end || dateEnd)
             label.form-label(for="endDate") End Date
+        
+
         .input-group.mb-3 
             span#slotA.input-group-text Slot A
-            input(type="text" name="slotA" placeHolder="open" maxlength="3" value=vacationWeek.slotA)
+            input.ps-2(type="text" name="slotA" placeHolder="open" maxlength="3" value=vacationWeek.slotA)
         .input-group.mb-3 
             span#slotB.input-group-text Slot B
-            input(type="text" name="slotB" placeHolder="open" maxlength="3" value=vacationWeek.slotB)
+            input.ps-2(type="text" name="slotB" placeHolder="open" maxlength="3" value=vacationWeek.slotB)
         .input-group.mb-3 
             span#slotC.input-group-text Slot C
-            input(type="text" name="slotC" placeHolder="open" maxlength="3" value=vacationWeek.slotC)
+            input.ps-2(type="text" name="slotC" placeHolder="open" maxlength="3" value=vacationWeek.slotC)
         .input-group.mb-3 
             span#slotD.input-group-text Slot D
-            input(type="text" name="slotD" placeHolder="open" maxlength="3" value=vacationWeek.slotD)
+            input.ps-2(type="text" name="slotD" placeHolder="open" maxlength="3" value=vacationWeek.slotD)
         .input-group.mb-3 
             span#slotE.input-group-text Slot E
-            input(type="text" name="slotE" placeHolder="open" maxlength="3" value=vacationWeek.slotE)
+            input.ps-2(type="text" name="slotE" placeHolder="open" maxlength="3" value=vacationWeek.slotE)
         .input-group.mb-3 
             span#slotF.input-group-text Slot F
-            input(type="text" name="slotF" placeHolder="open" maxlength="3" value=vacationWeek.slotF)
+            input.ps-2(type="text" name="slotF" placeHolder="open" maxlength="3" value=vacationWeek.slotF)
         .form-floating.mb-3
             input#notes.form-control(type="text" name="notes" placeHolder="notes" value=vacationWeek.notes)
             label.form-label(for="notes") Notes

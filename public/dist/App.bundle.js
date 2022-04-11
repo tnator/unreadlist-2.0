@@ -4043,7 +4043,7 @@ __webpack_require__.r(__webpack_exports__);
 // Need webpack to use this
 // $ is querySelector from bling.js
 // $$ is querySelectorAll from bling.js
-// on is basically addEventListener from bling.js
+// ...on... is basically addEventListener from bling.js
 
 
 

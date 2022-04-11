@@ -4,14 +4,23 @@ const controller = require('../controllers/controller');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const reviewController = require('../controllers/reviewController');
+const honeyBadgerController = require('../controllers/honeyBadgerController');
+const adminController = require('../controllers/adminController');
+
 
 const { catchErrors } = require('../handlers/errorHandlers');
 // formatting as below tells express to use index file in the folder
 const middleWare = require('../middleware/middleWare');
 const { Router } = require('express');
 
+// ADMIN ROUTES
+router.get('/admin', authController.isUberUser, adminController.admin);
+router.post('/adminProfileEdit', authController.isUberUser, adminController.adminProfileEdit);
+
 // GENERAL ROUTES
 router.get('/', controller.homePage);
+router.get('/quoteGet', authController.isUberUser, catchErrors(controller.quoteForm));
+router.post('/quoteSave', catchErrors(controller.quoteCreate));
 router.get('/error', controller.error);
 
 // CONTACT ROUTES
@@ -22,20 +31,41 @@ router.post('/contactAdd', catchErrors(controller.contactCreate));
 router.post('/contactAdd/:id', catchErrors(controller.contactUpdate));
 
 // VACATION ROUTES
-router.get('/vacation', catchErrors(controller.vacationGet));
+router.get('/vacation', authController.isLoggedIn, catchErrors(controller.vacationGet));
 router.get('/vacationAdd', catchErrors(controller.vacationAdd));
-router.get('/vacation/:id/edit', catchErrors(controller.vacationEdit))
+router.get('/vacation/:id/edit', catchErrors(controller.vacationEdit));
 router.post('/vacationEdit', catchErrors(controller.vacationCreate));
 router.post('/vacationEdit/:id', catchErrors(controller.vacationUpdate));
+router.get('/vacation/:id/delete',
+    authController.isLoggedIn,
+    catchErrors(controller.vacationDelete)
+);
 
-// NH routes
-router.get('/honeyBadger', catchErrors(controller.honeyBadgerGet));
+// HONEYBADGER routes
+router.get('/honeyBadger', catchErrors(honeyBadgerController.honeyBadgerDisplay));
+router.get('/honeyBadgerAdd', authController.isUberUser, catchErrors(honeyBadgerController.honeyBadgerAdd));
+router.get('/honeyBadger/:id/edit',
+    authController.isUberUser,
+    catchErrors(honeyBadgerController.honeyBadgerEdit));
+router.get('/honeyBadger/:id/delete',
+    authController.isUberUser,
+    catchErrors(honeyBadgerController.honeyBadgerDelete));
+router.post('/honeyBadgerEdit',
+    authController.isLoggedIn,
+    catchErrors(honeyBadgerController.honeyBadgerCalculate),
+    catchErrors(honeyBadgerController.honeyBadgerCreate)
+);
+router.post('/honeyBadgerEdit/:id',
+    authController.isLoggedIn,
+    catchErrors(honeyBadgerController.honeyBadgerCalculate),
+    catchErrors(honeyBadgerController.honeyBadgerUpdate)
+);
 
 // RESOURCES ROUTES
 router.get('/resources', catchErrors(controller.resourcesGet));
-router.get('/resourceAdd', catchErrors(controller.resourceAdd));
-router.get('/resources/:id/edit', catchErrors(controller.resourceEdit));
-router.get('/resources/:id/delete', catchErrors(controller.resourceDelete));
+router.get('/resourceAdd', authController.isUberUser, catchErrors(controller.resourceAdd));
+router.get('/resources/:id/edit', authController.isUberUser, catchErrors(controller.resourceEdit));
+router.get('/resources/:id/delete', authController.isUberUser, catchErrors(controller.resourceDelete));
 router.post('/resourceEdit', catchErrors(controller.resourceCreate));
 router.post('/resourceEdit/:id', catchErrors(controller.resourceUpdate));
 
@@ -76,15 +106,20 @@ router.get('/tags/:tag', catchErrors(controller.getSitesByTag));
 // PASSPORT LOGIN ROUTES
 router.get('/loginPassport', userController.loginForm);
 router.post('/loginPassport', authController.login);
-router.get('/registerPassport', userController.registerForm);
-router.post('/registerPassport',
+router.get('/register', authController.isUberUser, userController.registerForm);
+router.post('/register',
     userController.validateRegister,
     userController.register,
     authController.login
 );
 router.get('/logoutPassport', authController.logout);
-router.get('/profileEdit', authController.isLoggedIn, userController.profileEdit);
-router.post('/profileEdit', catchErrors(userController.profileUpdate));
+router.get('/profileDisplay',
+    authController.isLoggedIn,
+    userController.profileDisplay
+);
+router.get('/profileEdit', authController.isUberUser, userController.profileEdit);
+router.get('/profileEdit/:id', catchErrors(userController.profileEdit));
+router.post('/profileEdit', authController.isUberUser, catchErrors(userController.profileUpdate));
 router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/account/reset/:token', catchErrors(authController.reset));
 router.post('/account/reset/:token',
@@ -99,13 +134,10 @@ router.get('/map', catchErrors(controller.mapPage));
 router.get('/hearts', authController.isLoggedIn, catchErrors(controller.getHearts));
 
 // API
-// API
-// API
 router.get('/api/siteSearch', catchErrors(controller.searchSites));
 router.get('/api/contactSearch', catchErrors(controller.searchContacts));
 router.get('/api/sites/near', catchErrors(controller.mapSites));
 router.post('/api/sites/:id/heart', catchErrors(controller.heartSite));
-
 
 // SMS
 router.get('/sms', catchErrors(controller.smsGet));

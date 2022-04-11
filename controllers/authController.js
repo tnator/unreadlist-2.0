@@ -2,7 +2,8 @@ const passport = require('passport');
 // crypto module built into nodejs
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const userPassportModel = require('../models/userPassportModel');
+// const userPassportModel = require('../models/userPassportModel');
+const User = require('../models/userPassportModel');
 const mail = require('../handlers/mail');
 const promisify = require('es6-promisify');
 
@@ -12,16 +13,15 @@ const promisify = require('es6-promisify');
 // we are using local strategy
 // Need to configure passport to use local, facebook, etc.
 exports.login = passport.authenticate('local', {
-    
     failureRedirect: '/loginPassport',
     failureFlash: 'Failed Login!',
     successRedirect: '/',
-    successFlash: 'You are now logged in'
+    // successFlash: 'You are now logged in'
 });
 
 exports.logout = (req, res) => {
     req.logout();
-    req.flash('success', 'You are now logged out!');
+    // req.flash('success', 'You are now logged out!');
     res.redirect('/');
 };
 
@@ -34,10 +34,18 @@ exports.isLoggedIn = (req, res, next) => {
     req.flash('error', 'Oops..you must be logged in');
     res.redirect('/loginPassport');
 };
+exports.isUberUser = (req, res, next) => {
+    if(res.locals.clearance === 'uberUser') {
+        next();
+        return;
+    }
+    req.flash('error', 'You are not an Uber User');
+    res.redirect('/');
+};
 
 exports.forgot = async (req, res) => {
     // See if user exists
-    const user = await userPassportModel.findOne({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.emailPrimary });
     if(!user) {
         req.flash('error', 'Password reset emailed if account exists');
         return res.redirect('/loginPassport');
@@ -63,7 +71,7 @@ exports.forgot = async (req, res) => {
 };
 
 exports.reset = async (req, res) => {
-    const user = await userPassportModel.findOne({
+    const user = await User.findOne({
         resetPasswordToken: req.params.token,
         // $gt is a mongoose thing
         resetPasswordExpires: { $gt: Date.now() }
@@ -90,7 +98,7 @@ exports.confirmedPasswords = (req, res, next) => {
 
 exports.update = async (req, res) => {
     console.log('start update');
-    const user = await userPassportModel.findOne({
+    const user = await User.findOne({
         resetPasswordToken: req.params.token,
         // $gt is a mongoose thing
         resetPasswordExpires: { $gt: Date.now() }

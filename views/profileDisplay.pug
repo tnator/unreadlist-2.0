@@ -1,0 +1,150 @@
+extends layout 
+
+block content 
+    .container-fluid
+        .row.h-100.d-flex
+            .col-12.col-md-7.col-lg-8.bg-light
+                .row.my-4
+                    .col-2
+                        img(src=`/images/photos/profilePictures/${profile.firstName}${profile.lastName}.jpeg` class="img-thumbnail" alt="Profile Picture")
+                    .col-10
+                        h3.mb-4= profile.firstName + ' ' + profile.lastName + ' (' + profile.initials + ')'
+                        h5.mb-1= profile.specialty + ' - ' + profile.title
+                hr
+                .row.my-4
+                    .col-2.center 
+                        i.fa-duotone.fa-envelope.font-icon-color-email.fa-2xl
+                    .col-3.start
+                        h6 Primary Email
+                    a.apple-link.col-7.start(href=`mailto:${profile.emailPrimary}`)= profile.emailPrimary || 'NONE'
+                .row.my-4
+                    .col-2.center 
+                        i.fa-duotone.fa-envelope.font-icon-color-email.fa-2xl
+                    .col-3.start
+                        h6 Secondary Email
+                    a.apple-link.col-7.start(href=`mailto:${profile.emailSecondary}`)= profile.emailSecondary || 'NONE'
+                hr
+                .row.my-4
+                    .col-2.center 
+                        i.fa-duotone.fa-phone.font-icon-color-phone.fa-2xl
+                    .col-3.start
+                        h6 Primary Phone
+                    a.col-7.start(href=`tel:1-${profile.phonePrimary}`)= profile.phonePrimary
+                .row.my-4
+                    .col-2.center 
+                        i.fa-duotone.fa-phone-rotary.font-icon-color-phone.fa-2xl
+                    .col-3.start
+                        h6 Secondary Phone
+                    a.col-7.start(href=`tel:1-${profile.phoneSecondary}`)= profile.phoneSecondary
+                hr
+                .row.my-4 
+                    .col-2.center
+                        i.fa-duotone.fa-user.font-icon-color-user.fa-2xl
+                    .col-3.start
+                        h6 Medical School
+                    .col-7.start
+                        h6= profile.medSchool
+                .row.my-4
+                    .col-2.center
+                        i.fa-duotone.fa-user-injured.font-icon-color-injured.fa-2xl
+                    .col-3.start
+                        h6 Internship
+                    .col-7.start
+                        h6= profile.internship
+                .row.my-4
+                    .col-2.center
+                        i.fa-duotone.fa-user-doctor.font-icon-color-doctor.fa-2xl
+                    .col-3.start
+                        h6 Residency
+                    .col-7.start
+                        h6= profile.residency
+                if profile.fellowship
+                    .row.my-4
+                        .col-2.center
+                            i.fa-duotone.fa-user-ninja.font-icon-color-ninja.fa-2xl
+                        .col-3.start
+                            h6 Fellowship
+                        .col-7.start
+                            h6= profile.fellowship
+                hr
+                if uberUser
+                    .row.my-4.center
+                        a.w-25.btn.btn-warning(href=`/profileEdit/${profile._id || ''}`) Edit myProfile
+            .col-12.col-md-5.col-lg-4.bg-light.border-start
+                //- if honeyBadger.length > 0
+                h5.my-3.text-center my NH Shifts
+                    span.ms-2.badge.bg-secondary= honeyBadger.length
+                .row.my-4
+                    each honey in honeyBadger
+                        - var dateOptions = { month: 'numeric', day: 'numeric' };
+                        - var timeOptions = { hour: 'numeric', minute: 'numeric' };
+                        - var shiftDate = new Intl.DateTimeFormat('en-US', dateOptions).format(honey.startTime);
+                        - var startTime = new Intl.DateTimeFormat('en-US', timeOptions).format(honey.startTime);
+                        - var endTime = new Intl.DateTimeFormat('en-US', timeOptions).format(honey.endTime);
+                        .row.text-center
+                            .col.zero
+                                h6= shiftDate 
+                            .col.zero
+                                h6= startTime
+                            .col.zero 
+                                h6 to 
+                            .col.zero
+                                h6= endTime
+                hr.my-4
+                h5.my-3.text-center my Vacation
+                    span.ms-2.badge.bg-secondary= vacationWeeks.length
+                .row.my-4
+                    each vacation in vacationWeeks
+                        - var dateOptions = { month: 'numeric', day: 'numeric' };
+                        - var vacationStart = new Intl.DateTimeFormat('en-US', dateOptions).format(vacation.startDate);
+                        - var vacationEnd = new Intl.DateTimeFormat('en-US', dateOptions).format(vacation.endDate);
+
+                        .row.text-center
+                            .col-3
+                               h6= '#' + vacation.weekNum
+                            .col-3 
+                                h6= vacationStart
+                            .col-3 
+                                h6 to
+                            .col-3 
+                                h6= vacationEnd
+
+
+
+
+
+    //- .container.card.mb-3(style='max-width: 540px;')
+    //-     .row.card-header
+    //-         .col-8
+    //-             h5= profile.firstName + ' ' + profile.lastName
+    //-         if uberUser
+    //-         .col-4.end
+    //-             a(href='/profileEdit')
+    //-                 i.fa-duotone.fa-user-large.fa-xl
+    //-     .row.card-body.g-0
+    //-         .col-md-4
+    //-             img.img-fluid.rounded-start(src='...' alt='...')
+    //-         .col-md-8
+    //-                 h6.card-title= profile.specialty
+    //-                 h6.card-title Medical School
+    //-                 span.card-subtitle= profile.medSchool
+    //-                 h6.card-title Internship
+    //-                 p.card-subtitle= profile.internship
+    //-                 p.card-text
+    //-                 | Likes long walks on the beach and bathing in the entrails of the fallen
+    //-                 p.card-text
+    //-                     small.text-muted Last updated 3 mins ago
+    //-     if user 
+    //-     .row.card-footer
+    //-         .col-6
+    //-             a(href="#").btn.btn-primary= profile.emailPrimary
+    //-         .col-6
+    //-             a(href="#").btn.btn-primary= profile.phonePrimary
+    //- .container 
+        .row 
+            .col Upcoming shifts 
+            .col Upcoming NH shifts
+            .col RVUs
+        .row 
+            .col RAO news
+        

@@ -2,28 +2,46 @@ nav.navbar.navbar-expand-lg.navbar-light.p-0.gray-100.border-bottom
   .container
     a.navbar-brand(href='/')
       .center
-        //- i.fas.fa-radiation-alt.fa-2x.icon
-        //- i.fa-solid.fa-dragon.fa-lg.icon
-        i.fa-duotone.fa-biohazard.fa-xl
-        //- i.bi.bi-speedometer2.fa-2x.iconStart
-        #radase.m-0.px-3.iconStart Radase
-          //- span.iconEnd= title
-        //- h4#mobileTitle= title
-    button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarToggler', aria-controls='navbarToggler', aria-expanded='false', aria-label='Toggle navigation')
+        //- i.fas.fa-radiation-alt.fa-2x
+        i.fa-duotone.fa-biohazard.font-icon-color-logo.fa-xl
+        #radase.m-0.px-3 Radase
+          span#mobileTitle= title
+
+    button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='offcanvas', data-bs-target='#offcanvas', aria-controls='offcanvas-toggler')
       span.navbar-toggler-icon.custom-toggler
-    #navbarToggler.collapse.navbar-collapse
+    //- START HORIZONTAL NAVBAR FOR LARGE SCREENS
+    navbar#navbarToggler.collapse.navbar-collapse.row
+      ul.col-10.nav.d-flex.flex-row
+        //- PULLS IN NAVLIST FROM SEPARATE FILE
+        include navLinks
+      include navLogin
+    //- START OFFCANVAS FOR SMALL SCREENS
+    #offcanvas.offcanvas.offcanvas-start
+      .offcanvas-header
+        h5.offcanvas-title Radase
+          //- i.fas.fa-radiation-alt.fa-2x.icon
+        button.btn-close.text-reset(type="button" data-bs-dismiss="offcanvas" aria-label="Close")
+      .offcanvas-body
+        ul.nav.d-flex.flex-column
+          //- PULLS IN NAVLIST FROM SEPARATE FILE
+          include navLinks
+        include navLogin
+
+
+
+    //- button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarToggler', aria-controls='navbarToggler', aria-expanded='false', aria-label='Toggle navigation')
+    //-   span.navbar-toggler-icon.custom-toggler
+    //- #navbarToggler.collapse.navbar-collapse
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
         li.nav-item
           a.nav-link(href='/') Home
         li.nav-item
           a.nav-link(href='/contacts') Contacts
-        if user
-          li.nav-item
-            a.nav-link(href='/vacation') Vacation
-        if user
-          li.nav-item
-            a.nav-link(href='/honeyBadger')
-              i.fa-duotone.fa-badger-honey.fa-lg
+        li.nav-item
+          a.nav-link(href='/vacation') Vacation
+        li.nav-item
+          a.nav-link(href='/honeyBadger')
+            i.fa-duotone.fa-badger-honey.fa-lg
         li.nav-item
           a.nav-link(href='/resources') Resources
         li.nav-item
@@ -34,9 +52,9 @@ nav.navbar.navbar-expand-lg.navbar-light.p-0.gray-100.border-bottom
             i.fa-solid.fa-heart.fa-lg.mx-1
             span.heart-count #{user.hearts && user.hearts.length}
         
-        if !user
+        if uberUser
           li.nav-item 
-            a.nav-link(href='/registerPassport') Register
+            a.nav-link(href='/register') Register
       if user
         a.btn.btn-secondary.me-3(href='/logoutPassport') Log Out
       else
@@ -45,7 +63,5 @@ nav.navbar.navbar-expand-lg.navbar-light.p-0.gray-100.border-bottom
       if user
         //- THIS BELOW IF FROM WES BOS COURSE
         //- img.avatar(src=user.gravatar)
-        a(href='/profileEdit')
+        a(href='/profileDisplay')
           i.fa-duotone.fa-user-large.fa-xl
-
-        

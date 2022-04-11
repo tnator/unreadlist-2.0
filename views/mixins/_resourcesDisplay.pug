@@ -1,11 +1,34 @@
-mixin resourcesDisplay(item = {})
+mixin resourcesDisplay(resource = {})
 
-    .row
-        a.w-50.list-group-item.list-group-item-action(href=item.url)= item.labelName
-        if user
-        .col-2.center
-            .row.h-100
-                a.col.center.fs-4(href=`/resources/${item._id}/edit`)
-                    i.bi.bi-pencil-square
-                a.col.center.fs-4(href=`/resources/${item._id}/delete`)
-                    i.bi.bi-x-square
+    //- .row
+    //-     a.w-50.list-group-item.list-group-item-action(href=item.url)= item.labelName
+    //-     if user
+    //-     .col-2.center
+    //-         .row.h-100
+    //-             a.col.center.fs-4(href=`/resources/${item._id}/edit`)
+    //-                 i.bi.bi-pencil-square
+    //-             a.col.center.fs-4(href=`/resources/${item._id}/delete`)
+    //-                 i.bi.bi-x-square
+
+
+    table.table.table-striped.table-hover.text-center
+        thead 
+            tr 
+                th.link(scope="col") Hyperlink 
+                th.notes(scope="col") Notes
+                if uberUser
+                    th.edit(scope="col") Edit
+                    th.delete(scope="delete") Delete
+        tbody 
+            each item in resource
+                tr.link 
+                    td.labelName
+                        a(href=item.url)= item.labelName
+                    td.notesUrl= item.notes
+                    if uberUser
+                        td.edit
+                            a.text-success(href=`/resources/${item._id}/edit`)
+                                i.bi.bi-pencil-square
+                        td.delete
+                            a.text-danger(href=`/resources/${item._id}/delete`)
+                                i.bi.bi-x-square

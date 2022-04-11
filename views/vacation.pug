@@ -3,35 +3,110 @@ extends layout
 include mixins/_vacationDisplay
 
 block content
-    .container-fluid.m-0.p-0
-        .row.m-0.p-2.bg-primary.bg-gradient
-            .center
-                i.fa-light.fa-earth-americas.fs-4.text-light.pe-3
-                h5.text-light.me-3= title
-                //- ONLY VISIBLE IF LOGGED IN AND ADMIN
-                if user
-                    a.add(href='/vacationAdd')
-                        i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
-        .row.w-100.m-0.p-0.bg-radblack.text-radwhite.text-center
-            .col-1.m-0.border-end.border-bottom.py-2.px-0.center.text-shrink #
-            .col-1.m-0.border-end.border-bottom.py-2.px-0.center.text-shrink
-                i.bi.bi-arrow-bar-right
-            .col-1.m-0.border-end.border-bottom.py-2.px-0.center.text-shrink
-                i.bi.bi-arrow-bar-left
-            .col-9.col-lg-6.m-0.p-0.center
-                .row.w-100.m-0.p-0
-                    .col-2.m-0.p-0.text-shrink A
-                    .col-2.m-0.p-0.text-shrink B
-                    .col-2.m-0.p-0.text-shrink C
-                    .col-2.m-0.p-0.text-shrink D
-                    .col-2.m-0.p-0.text-shrink E
-                    .col-2.m-0.p-0.text-shrink F
-            .notesCol.col-lg-3.align-self-center Notes
-        each vacationItem in vacation
-            +vacationDisplay(vacationItem)
-        //- ONLY VISIBLE IF LOGGED IN AND ADMIN
-        if user
-            .row.w-100.m-0.mt-3
-                .col-4
-                    .list-group.totalsContainer.p-0
-                .col-8
+
+    .container-lg
+        //- .row.m-0.p-2.bg-primary.bg-gradient
+        //-     .center
+        //-         i.fa-light.fa-earth-americas.fs-4.text-light.pe-3
+        //-         h5.text-light.me-3= title
+        //-         //- ONLY VISIBLE IF LOGGED IN AND ADMIN
+        //-         if uberUser
+        //-             a.add(href='/vacationAdd')
+        //-                 i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
+        table.my-3.table.table-striped.table-hover.text-center.border
+            thead
+                tr
+                    th.vacationWeek.table-info(scope="col") # 
+                    th.startVacation.table-primary(scope="col")
+                        i.bi.bi-arrow-bar-right
+                    th.endVacation.table-primary(scope="col")
+                        i.bi.bi-arrow-bar-left
+                    th.slotA(scope="col") A
+                    th.slotB(scope="col") B
+                    th.slotC(scope="col") C
+                    th.slotD(scope="col") D
+                    th.slotE(scope="col") E
+                    th.slotF(scope="col") F
+                    if uberUser
+                        th.table-primary(scope="col") Notes
+                        th.delete.table-light.text-danger(scope="col") X
+            tbody
+                each vacationItem in vacation 
+                    +vacationDisplay(vacationItem)
+        .row.my-4
+            h5 Holidays
+        if generalUser
+            .row#myVacation
+                h5 My Vacation Weeks
+                ul
+                each week in myVacation
+
+                    //- JAVASCRIPT STARTDATE
+                    - const startDateSaved = week.startDate;
+                    - const startDateISO = startDateSaved.toISOString().replace('.000Z', '');
+                    - const startDateFull = new Date(startDateISO);
+                    - const startYear = startDateFull.getFullYear();
+                    - const startMonthNum = startDateFull.getMonth();
+                    - const startDate = startDateFull.getDate();
+                    - if (startMonthNum === 0) {
+                    -     startMonth = "1";
+                    - } else if (startMonthNum === 1) {
+                    -     startMonth = "2";
+                    - } else if (startMonthNum === 2) {
+                    -     startMonth = "3";
+                    - } else if (startMonthNum === 3) {
+                    -     startMonth = "4";
+                    - } else if (startMonthNum === 4) {
+                    -     startMonth = "5";
+                    - } else if (startMonthNum === 5) {
+                    -     startMonth = "6";
+                    - } else if (startMonthNum === 6) {
+                    -     startMonth = "7";
+                    - } else if (startMonthNum === 7) {
+                    -     startMonth = "8";
+                    - } else if (startMonthNum === 8) {
+                    -     startMonth = "9";
+                    - } else if (startMonthNum === 9) {
+                    -     startMonth = "10";    
+                    - } else if (startMonthNum === 10) {
+                    -     startMonth = "11";
+                    - } else {
+                    -     startMonth = "12";
+                    - }
+                    - const startDateDisplay = startMonth + '/' + startDate;
+
+                    //- JAVASCRIPT ENDDATE
+                    - const endDateSaved = week.endDate;
+                    - const endDateISO = endDateSaved.toISOString().replace('.000Z', '');
+                    - const endDateFull = new Date(endDateISO);
+                    - const endYear = endDateFull.getFullYear();
+                    - const endMonthNum = endDateFull.getMonth();
+                    - const endDate = endDateFull.getDate();
+                    - if (endMonthNum === 0) {
+                    -     endMonth = "1";
+                    - } else if (endMonthNum === 1) {
+                    -     endMonth = "2";
+                    - } else if (endMonthNum === 2) {
+                    -     endMonth = "3";
+                    - } else if (endMonthNum === 3) {
+                    -     endMonth = "4";
+                    - } else if (endMonthNum === 4) {
+                    -     endMonth = "5";
+                    - } else if (endMonthNum === 5) {
+                    -     endMonth = "6";
+                    - } else if (endMonthNum === 6) {
+                    -     endMonth = "7";
+                    - } else if (endMonthNum === 7) {
+                    -     endMonth = "8";
+                    - } else if (endMonthNum === 8) {
+                    -     endMonth = "9";
+                    - } else if (endMonthNum === 9) {
+                    -     endMonth = "10";    
+                    - } else if (endMonthNum === 10) {
+                    -     endMonth = "11";
+                    - } else {
+                    -     endMonth = "12";
+                    - }
+                    - const endDateDisplay = endMonth + '/' + endDate;
+
+                    li= 'Week #' + week.weekNum + ' from ' + startDateDisplay + ' to ' + endDateDisplay

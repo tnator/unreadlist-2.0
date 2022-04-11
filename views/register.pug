@@ -1,6 +1,40 @@
 extends layout 
 
-include mixins/_registrationForm
-
-block content
-    +registrationForm()
+block content 
+    .container.py-3
+        .row.my-3
+            h5= title 
+        .row.my-3
+            form.needs-validation.container(method="POST" action="/register")
+                .row.mb-3.g-3
+                    .col-sm-5
+                        .form-floating
+                            input.form-control(type="text" name="firstName" required)
+                            label.form-label(for="firstName") First Name
+                    .col-sm-5
+                        .form-floating
+                            input.form-control(type="text" name="lastName" required)
+                            label.form-label(for="lastName") Last Name
+                    .col-sm-2
+                        .form-floating
+                            input.form-control(type="text" name="initials" required)
+                            label.form-label(for="initials") Initials
+                .row.mb-3.g-3 
+                    .col-sm-6 
+                        .form-floating 
+                            input.form-control(type="email" name="emailPrimary" required)
+                            label.form-label(for="emailPrimary") Primary Email
+                    .col-sm-6
+                        .form-floating
+                            input.form-control(type="tel" name="phonePrimary" required)
+                            label.form-label(for="phonePrimary") Primary Phone
+                .row.mb-3.g-3 
+                    .col-sm-6 
+                        .form-floating 
+                            input.form-control(type="password" name="password" required)
+                            label.form-label(for="password") Password
+                    .col-sm-6 
+                        .form-floating
+                            input.form-control(type="password" name="password-confirm" required)
+                            label.form-label(for="password-confirm") Confirm Password
+                input.form-input.btn.btn-warning(type="submit" value="Register ->")

@@ -1,14 +1,47 @@
 mixin contactCard(contact = {})
 
-    //- a.row(href=`tel:1-${contact.phoneNum}`)
-    //-     .col-7.text-radblue= contact.numLabel
-    //-     .col-5.text-radyellow= contact.phoneNum
-    a.list-group-item.list-group-item-action.p-1.d-flex.justify-content-between.align-items-start(href=`tel:1-${contact.phoneNum}`)
-        .ms-2.me-auto
-            .fw-bold= contact.numLabel
-            .div= contact.phoneNum
-            
+    //- main, er, stroke, readingroom, radiology, it, staff, unit, administration
+
+    each tag in contact.tag
+        -   
+            if (tag === 'er') {
+                contactText = 'text-radred';
+            } else if (tag === 'stroke') {
+                contactText = 'text-radred';
+            } else if (tag === 'readingroom') {
+                contactText = 'text-radblue';
+            } else if (tag === 'main') {
+                contactText = 'text-radblack';
+            } else if (tag === 'administration') {
+                contactText = 'text-radyellow';
+            } else {
+                contactText = 'text-radblack';
+            }
         
+    .row.p-0.m-0
+        a.panel-contact.col-md(href=`tel:1-${contact.phoneNum}` class=`${contactText}`)
+            .row.zero
+                .col-2.panel-contact-logo
+                    each tag in contact.tag
+                        if tag === 'er'
+                            .fw-bold ER 
+                        else if tag === 'stroke'
+                            i.fa-solid.fa-brain.fa-xl
+                        else if tag === 'readingroom'
+                            i.fa-solid.fa-desktop.fa-xl
+                        else if tag === 'administration'
+                            i.fa-solid.fa-circle-user.fa-xl
+                if uberUser
+                    .col-8
+                        .panel-contact-label= contact.numLabel
+                        .panel-contact-num= contact.phoneNum
+                else 
+                    .col-10
+                        .panel-contact-label= contact.numLabel
+                        .panel-contact-num= contact.phoneNum
+        if uberUser
+            a.col-2.center(href=`/contacts/${contact._id}/edit`) Edit
+
         //- if !user
         //-     .row.w-100.m-0.p-0
         //-         #phoneLabel.col-7.p-0.text-radblue= contact.numLabel

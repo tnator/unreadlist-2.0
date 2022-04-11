@@ -2,13 +2,51 @@ extends layout
 
 block content 
     .container-fluid.m-0.p-0
-        .row.m-0.p-2.bg-primary.bg-gradient
-            .center
-                i.fa-light.fa-badger-honey.fs-4.text-light.pe-3
-                h5.text-light.me-3= title
-                //- ONLY VISIBLE IF LOGGED IN AND ADMIN
-                if user
-                    a.add(href='/honeyBadgerAdd')
-                        i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
+        //- .row.m-0.p-2.bg-primary.bg-gradient
+        //-     .center
+        //-         i.fa-light.fa-badger-honey.fs-4.text-light.pe-3
+        //-         h5.text-light.me-3= title
+        //-         //- ONLY VISIBLE IF LOGGED IN AND ADMIN
+        //-         if uberUser
+        //-             a.add(href='/honeyBadgerAdd')
+        //-                 i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
         //- CREATE HONEY BADGERS SCHEDULE BELOW HERE
-        .row
+        //- .row
+        table.table.table-striped.table-hover.text-center
+            thead
+                tr
+                    th.shiftDate(scope="col") Date 
+                    th.startTime(scope="col") Start
+                    th.endTime(scope="col") End
+                    th.shiftDuration(scope="col") Duration
+                    th.payer(scope="col") Payer
+                    th.rate(scope="col") Rate
+                    th.fee(scope="col") Fee
+                    th.assigned(scope="col") Assigned
+                    if uberUser
+                        th(scope="col") Delete
+            tbody
+                each shift in shifts
+                    tr.shiftrow(class=shift.assigned.toLowerCase())
+                        - var dateOptions = { month: 'numeric', day: 'numeric' };
+                        - var timeOptions = { hour: 'numeric', minute: 'numeric' };
+                        - var shiftDate = new Intl.DateTimeFormat('en-US', dateOptions).format(shift.startTime);
+                        - var startTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.startTime);
+                        - var endTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.endTime);
+                        
+                        if uberUser 
+                            th.shiftDate(scope="row")
+                                a(href=`/honeyBadger/${shift._id}/edit`)= shiftDate
+                        else
+                            th(scope="row")= shiftDate
+                        td.startTime= startTime
+                        td.endTime= endTime
+                        td.shiftDuration= shift.shiftDuration + ' hr(s)'
+                        td.payer= shift.payer
+                        td.rate= '$ ' + shift.rate
+                        td.fee= '$ ' + shift.fee
+                        td.assigned= shift.assigned
+                        if uberUser 
+                            td.edit 
+                                a(href=`/honeyBadger/${shift._id}/delete`)
+                                    i.bi.bi-x-square

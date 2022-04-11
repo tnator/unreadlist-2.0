@@ -68,21 +68,22 @@ mixin vacationDisplay(vacationItem = {})
     - }
     - const endDateDisplay = endMonth + '/' + endDate;
 
-    .row.w-100.m-0.p-0.text-center.border-bottom
-        if user
-            a(href=`/vacation/${vacationItem._id}/edit`).col-1.m-0.p-1.bg-radblue.text-radwhite.center.text-shrink= vacationItem.weekNum
+    tr.vacationWeek(class="")
+        if uberUser 
+            th.vacationWeek.table-info(scope="row")
+                a(href=`/vacation/${vacationItem._id}/edit`)= vacationItem.weekNum
         else 
-            .col-1.m-0.p-1.bg-radblue.text-radwhite.center.text-shrink= vacationItem.weekNum
-        .col-1.m-0.p-0.body1.bg-radblue-300.text-radwhite.center.text-shrink= startDateDisplay
-        .col-1.m-0.p-0.body1.bg-radblue-200.text-radwhite.center.text-shrink= endDateDisplay 
-        .col-9.col-lg-6.m-0.p-0
-            .row.w-100.h-100.m-0.p-0
-                .slot.body1.col-2.m-0.p-0.center.text-shrink(class=vacationItem.slotA)= vacationItem.slotA
-                .slot.body1.col-2.m-0.p-0.center.text-shrink(class=vacationItem.slotB)= vacationItem.slotB
-                .slot.body1.col-2.m-0.p-0.center.text-shrink(class=vacationItem.slotC)= vacationItem.slotC
-                .slot.body1.col-2.m-0.p-0.center.text-shrink(class=vacationItem.slotD)= vacationItem.slotD
-                .slot.body1.col-2.m-0.p-0.center.text-shrink(class=vacationItem.slotE)= vacationItem.slotE
-                .slot.body1.col-2.m-0.p-0.center.text-shrink(class=vacationItem.slotF)= vacationItem.slotF
-        .notesCol.col-lg-3.align-self-center= vacationItem.notes
-        if user
-            .adminNotes.col-lg-1.align-self-center
+            th.table-info(scope="row")= vacationItem.weekNum  
+        td.startVacation.table-primary= startDateDisplay 
+        td.endVacation.table-primary= endDateDisplay 
+        td.slot.slotA(class=vacationItem.slotA.toLowerCase())= vacationItem.slotA
+        td.slot.slotB(class=vacationItem.slotB.toLowerCase())= vacationItem.slotB
+        td.slot.slotC(class=vacationItem.slotC.toLowerCase())= vacationItem.slotC
+        td.slot.slotD(class=vacationItem.slotD.toLowerCase())= vacationItem.slotD
+        td.slot.slotE(class=vacationItem.slotE.toLowerCase())= vacationItem.slotE
+        td.slot.slotF(class=vacationItem.slotF.toLowerCase())= vacationItem.slotF
+        if uberUser
+            td.slot.notesVacation.table-primary= vacationItem.notes
+            td.delete.table-light
+                a.text-danger(href=`/vacation/${vacationItem._id}/delete`)
+                    i.bi.bi-x-square

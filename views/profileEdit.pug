@@ -1,21 +1,106 @@
 extends layout 
 
 block content
-
     .container-fluid.m-0.p-0 
         .row.m-0.p-2.bg-primary.bg-gradient
             .center
                 i.fa-solid.fa-address-card.fs-4.text-light.pe-3
                 h5.text-light.me-3= title 
 
-
-    form.container(action="/profileEdit" method="POST")
-        .row.center
-            .mb-3
-                label.form-label(for="name") Name 
-                input.form-control(type="text" name="name" value=user.name)
-            .mb-3
-                label.form-label(for="email") Email Address
-                input.form-control(type="text" name="email" value=user.email)
-            
-            input.btn.btn-warning(type="submit" value="Update Profile")
+    form.needs-validation.container.py-3(novalidate method="POST" action="/profileEdit")
+        .row.mb-3.g-3
+            .col-sm-5
+                .form-floating
+                    input.form-control(type="text" name="firstName" value=profile.firstName required)
+                    label.form-label(for="firstName") First Name
+            .col-sm-5
+                .form-floating
+                    input.form-control(type="text" name="lastName" value=profile.lastName required)
+                    label.form-label(for="lastName") Last Name
+            .col-sm
+                .form-floating
+                    input.form-control(type="text" name="initials" value=profile.initials min=3 max=3)
+                    label.form-label(for="initials") Initials
+        .row.mb-3.g-3 
+            .col-sm-4
+                .form-floating 
+                    input.form-control(type="text" value=profile.title name="title")
+                    label.form-label(for="title") Title
+            .col-sm-4
+                .form-floating
+                    select.form-select(type="text" name="specialty")
+                        option(selected)= profile.specialty
+                        option(value="Body Imaging") Body Imaging
+                        option(value="Cardiac Imaging") Cardiac Imaging
+                        option(value="Chest / Thoracic Imaging") Chest/Thoracic Imaging
+                        option(value="General Diagnostic Imaging") General Diagnostic
+                        option(value="Interventional / Vascular") Interventional/Vascular
+                        option(value="Mammography / Breast Imaging") Mammography/Breast
+                        option(value="Musculoskeletal Imaging") Musculoskeletal Imaging
+                        option(value="Neuroradiology") Neuroradiology
+                        option(value="Nuclear Medicine") Nuclear Medicine
+                    label.form-label(for="specialty") Specialty
+            .col-sm
+                .form-floating
+                    select.form-select(type="text" name="clearance" required)
+                        option(selected)= profile.clearance
+                        option(value="uberUser") Uber user
+                        option(value="radUser") Rad user
+                        option(value="adminUser") Admin user
+                        option(value="generalUser") General user
+                    label.form-label(for="clearance") Clearance Level 
+        .row.mb-3.g-3 
+            .col-sm-6 
+                .form-floating 
+                    input.form-control(type="email" name="emailPrimary" value=profile.emailPrimary required)
+                    label.form-label(for="emailPrimary") Primary Email
+            .col-sm-6 
+                .form-floating
+                    input.form-control(type="email" name="emailSecondary" value=profile.emailSecondary)
+                    label.form-label(for="emailSecondary") Secondary Email
+        .row.mb-3.g-3
+            .col-sm-6 
+                .form-floating 
+                    input.form-control.phone-number(type="tel" name="phonePrimary" minlength="12" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$" onkeydown="phoneNumberFormatter()" placeholder="_ _ _-_ _ _-_ _ _ _" value=profile.phonePrimary required)
+                    label.form-label(for="phonePrimary") Primary Phone
+            .col-sm-6 
+                .form-floating
+                    input.form-control.phone-number(type="tel" name="phoneSecondary" minlength="12" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$" onkeydown="phoneNumberFormatter()" placeholder="_ _ _-_ _ _-_ _ _ _" value=profile.phoneSecondary)
+                    label.form-label(for="phoneSecondary") Secondary Phone
+        .row.mb-3.g-3 
+            .col-sm-9
+                .form-floating
+                    input.form-control(type="text" name="medSchool" value=profile.medSchool)
+                    label.form-label(for="medSchool") Medical School
+            .col-sm
+                .form-floating
+                    select.form-select(type="text" name="degree" value=profile.degree)
+                        option(selected)= profile.degree
+                        option(value="MD") Medical (MD)
+                        option(value="DO") Osteopathic (DO)
+                    label.form-label(for="degree") Degree 
+        .row.mb-3.g-3
+            .col-sm
+                .form-floating
+                    input.form-control(type="text" name="internship" value=profile.internship)
+                    label.form-label(for="internship") Internship
+        .row.mb-3.g-3
+            .col-sm
+                .form-floating
+                    input.form-control(type="text" name="residency" value=profile.residency)
+                    label.form-label(for="residency") Residency 
+        .row.mb-3.g-3
+            .col-sm
+                .form-floating
+                    input.form-control(type="text" name="fellowship" value=profile.fellowship)
+                    label.form-label(for="fellowship") Fellowship 
+        .row.mb-3.g-3 
+            .col-sm-6 
+                .form-floating 
+                    input.form-control(type="password" name="password" value=profile.password required)
+                    label.form-label(for="password") Password
+            .col-sm-6 
+                .form-floating
+                    input.form-control(type="password" name="password-confirm" required)
+                    label.form-label(for="password-confirm") Confirm Password
+        input.form-input.btn.btn-warning(type="submit" value="Update Profile ->")

@@ -1,0 +1,12 @@
+//- NAV LOGIN TEMPLATE
+.col.d-flex.flex-row.center.p-0
+    if user
+        a.pe-3(href='/profileDisplay')
+            i.fa-duotone.fa-user-large.font-icon-color-user.fa-xl
+        a.w-75.btn.btn-secondary(href='/logoutPassport') Log Out
+    else
+        a.w-75.btn.btn-secondary(href='/loginPassport') Log In
+
+//- if user
+    //- THIS BELOW IF FROM WES BOS COURSE
+    //- img.avatar(src=user.gravatar)

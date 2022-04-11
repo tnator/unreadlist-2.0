@@ -1,0 +1,43 @@
+mixin honeyBadgerForm(shift = {})
+
+    -   if (shift.startTime && shift.endTime) {
+    -       var startTime = shift.startTime;
+    -       var offset = startTime.getTimezoneOffset() / 60;
+    -       var hours = startTime.getHours();
+    -       startTime.setHours(hours - offset);
+    -       var isoStart = startTime.toISOString();
+    -       var start = isoStart.slice(0,-5);
+    -
+    -       var endTime = shift.endTime;
+    -       var offset = endTime.getTimezoneOffset() / 60;
+    -       var hours = endTime.getHours();
+    -       endTime.setHours(hours - offset);
+    -       var isoEnd = endTime.toISOString();
+    -       var end = isoEnd.slice(0,-5);
+    -   }
+    -   var date = new Date();
+    -   var month = date.getMonth();
+    -   date.setMonth(month + 1);
+    -   var offset = date.getTimezoneOffset() / 60;
+    -   var hours = date.getHours();
+    -   date.setHours(hours - offset);
+    -   var date2 = date.toISOString();
+    -   var date3 = date2.slice(0,-5);
+
+    form.container.py-2(action=`/honeyBadgerEdit/${shift._id || ''}` method="POST")
+        .form-floating.mb-3
+            input#startTime.form-control(type="datetime-local" name="startTime" placeHolder="startTime" value=start || date3)
+            label.form-label(for="startTime") Start Time
+        .form-floating.mb-3
+            input#endTime.form-control(type="datetime-local" name="endTime" placeHolder="endTime" value=end || date3)
+            label.form-label(for="endTime") End Time
+        .form-floating.mb-3
+            input#payer.form-control(type="text" name="payer" placeHolder="payer" value=shift.payer || 'RAO')
+            label.form-label(for="payer") Payer
+        .form-floating.mb-3
+            input#rate.form-control(type="text" name="rate" placeHolder="rate" value=shift.rate || 400)
+            label.form-label(for="rate") Rate
+        .form-floating.mb-3
+            input#assigned.form-control(type="text" name="assigned" placeHolder="assigned" value=shift.assigned)
+            label.form-label(for="assigned") Assigned
+        input.btn.btn-warning(type="submit" value="Save Shift" class="button")

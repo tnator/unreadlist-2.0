@@ -5,16 +5,19 @@ const mongoose = require('mongoose');
 const Contact = mongoose.model('Contact');
 const Vacation = mongoose.model('Vacation');
 const Resource = mongoose.model('Resource');
-const User = mongoose.model('UserPassport');
+const User = mongoose.model('User');
 const Site = mongoose.model('Site');
+const Quote = mongoose.model('Quote');
+// const HoneyBadger = mongoose.model('HoneyBadger');
 
 const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
-const { rawListeners } = require('../models/userPassportModel');
+const { rawListeners, findOneAndDelete } = require('../models/userPassportModel');
 const { Store } = require('express-session');
 const router = require('../routes');
 const { response } = require('express');
+const { getExpectedTwilioSignature } = require('twilio/lib/webhooks/webhooks');
 // const twilio = require('twilio');
 
 // Multer is for images
@@ -31,13 +34,23 @@ const multerOptions = {
 };
 
 // LOADS INDEX HOMEPAGE
-exports.homePage = (req, res) => {
-    // req.flash('info', 'Welcome to the homepage!');
-    res.render('index', {title: 'Home'});
+exports.homePage = async (req, res) => {
+    // const quotes = await Quote.find({ });
+    const quotes = await Quote.aggregate([ {$sample:{size:1}} ]);
+    res.render('index', { title: 'Home', quotes });
 };
-exports.error = (req,res) => {
+exports.quoteForm = async (req, res) => {
+    res.render('quoteForm', { title: 'Add Quote' });
+};
+exports.quoteCreate = async (req, res) => {
+    const quote = new Quote(req.body);
+    await quote.save();
+    console.log('Quote created');
+    res.redirect('/');
+};
+exports.error = (req, res) => {
     res.render('error', { title: 'Error Page' });
-}
+};
 
 // CONTACTS CONTROLLER OPERATIONS
 exports.contactAdd = async (req, res) => {
@@ -80,7 +93,9 @@ exports.contactsGet = async (req, res) => {
 };
 exports.contactEdit = async (req, res) => {
     const contact = await Contact.findOne({ _id: req.params.id });
-    res.render('contactEdit', { title: `Editing ${contact.acronym} ${contact.numLabel}`, contact });
+    // res.render('contactEdit', { title: `Editing ${contact.acronym} | ${contact.numLabel}`, contact });
+    res.render('contactEdit', { title: 'Edit Contact', contact });
+
 };
 exports.contactUpdate = async (req, res) => {
     const contact = await Contact.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -116,8 +131,17 @@ exports.searchContacts = async (req, res) => {
 
 // VACATION CONTROLLER OPERATIONS
 exports.vacationGet = async (req,res) => {
+    const profile = req.user;
     const vacation = await Vacation.find({}).sort({ "weekNum" : 1 });
-    res.render('vacation', { title: 'Vacation 2022', vacation });
+    const myVacation = await Vacation.find({ $or: [
+        {slotA: profile.initials},
+        {slotB: profile.initials},
+        {slotC: profile.initials},
+        {slotD: profile.initials},
+        {slotE: profile.initials},
+        {slotF: profile.initials},
+    ]});
+    res.render('vacation', { title: 'Vacation', vacation, myVacation});
 };
 exports.vacationAdd = async (req,res) => {
     res.render('vacationAdd', { title: 'Vacation Add Page' });
@@ -140,11 +164,11 @@ exports.vacationUpdate = async (req, res) => {
     }).exec();
     res.redirect('/vacation');
 };
-
-// HONEYBADDGER CONTROLLERS
-exports.honeyBadgerGet = async (req, res) => {
-    res.render('honeyBadger', { title: 'Honey Badger Shifts' });
+exports.vacationDelete = async (req, res) => {
+    const vacation = await Vacation.findOneAndDelete({ _id: req.params.id }, req.body ).exec();
+    res.redirect('/vacation');
 };
+
 
 // RESOURCES CONTROLLER OPERATIONS
 exports.resourcesGet = async (req, res) => {

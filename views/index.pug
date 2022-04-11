@@ -1,19 +1,25 @@
 extends layout 
 
+include mixins/_quoteCard
+
 block content
     section.container-fluid.h-100.bg-light.bg-gradient.center.flex-column
-        .row.center
+        .row.h-75.center
             .display-1 Catalyze Your Workflow
-        .row.center 
-            .div Quote of the day
-        .row.center 
-            .col.d-flex.flex-row
-                h6 Quick Links
-                a(href='https://www.qgenda.com') Qgenda Ocala
-                a(href='https://www.qgenda.com') Qgenda Daytona
-                a(href='https://www.chatbunker.com') Chatbunker 
-                a(href='https://www.raocala.com') RAO Email
-                a(href='https://www.quinsite.com') Quinsite
+        .row.mb-5.w-100.h-25.center
+            .col
+                +quoteCard(quotes)
+        
+        
+            //- h6.text-center Quote of the day
+        //- .row.align-self-end
+        //-     .col.d-flex.flex-row
+        //-         h6 Quick Links
+        //-         a(href='https://www.qgenda.com') Qgenda Ocala
+        //-         a(href='https://www.qgenda.com') Qgenda Daytona
+        //-         a(href='https://www.chatbunker.com') Chatbunker 
+        //-         a(href='https://www.raocala.com') RAO Email
+        //-         a(href='https://www.quinsite.com') Quinsite
 
 
 

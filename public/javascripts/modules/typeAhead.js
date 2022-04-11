@@ -30,9 +30,9 @@ function typeAhead(search) {
             return; //stop!
         }
         // show the search results
-        searchResults.style.display = 'block';
+        searchResults.style.display = 'list-item';
         // will remove with backspace
-        // searchResults.innerHTML = '';
+        searchResults.innerHTML = '';
 
         axios
             .get(`/api/contactSearch?q=${this.value}`)
@@ -42,7 +42,7 @@ function typeAhead(search) {
                     // Example if you type ORMC
                     // console.log('There is something to show');
                     const html = searchResultsHTML(res.data);
-                    searchResults.innerHTML = dompurify.sanitize(searchResultsHTML(res.data));
+                    searchResults.innerHTML = dompurify.sanitize(html);
                     return;
                 };
                 // tell them nothing came back
@@ -56,7 +56,7 @@ function typeAhead(search) {
     // handle keyboard inputs
     searchInput.on('keyup', (e) => {
         // if not pressing up, down, or enter, who cares
-        if(![38, 40, 14].includes(e.keyCode)) {
+        if(![38, 40, 13].includes(e.keyCode)) {
             return; //skp it
         }
         const activeClass = 'search__result--active';

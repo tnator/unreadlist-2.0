@@ -4,18 +4,13 @@ include mixins/_resourcesDisplay
 
 block content
     .container-fluid.m-0.p-0
-        .row.m-0.p-2.bg-primary.bg-gradient
-            .center
-                i.bi.bi-link.fs-1.text-light.pe-3
-                h5.me-3.text-light= title
+        //- .row.m-0.p-2.bg-primary.bg-gradient
+        //-     .center
+        //-         i.bi.bi-link.fs-1.text-light.pe-3
+        //-         h5.me-3.text-light= title
 
-                //- ONLY VISIBLE IF LOGGED IN AND ADMIN
-                if user
-                    a.add(href='/resourceAdd')
-                        i(style="font-size: 1.5rem;").bi.bi-plus-square
-        //- .container-fluid
-        .row.m-0.w-100
-            
-            .list-group.list-group-flush.p-0
-                each item in resource
-                    +resourcesDisplay(item)
+        //-         //- ONLY VISIBLE IF LOGGED IN AND ADMIN
+        //-         if user
+        //-             a.add(href='/resourceAdd')
+        //-                 i(style="font-size: 1.5rem;").bi.bi-plus-square
+        +resourcesDisplay(resource)

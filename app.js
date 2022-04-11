@@ -69,7 +69,21 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.h = helpers;
     res.locals.flashes = req.flash();
+    // access if logged in
     res.locals.user = req.user || null;
+    // access for uberUsers
+    if (req.user) {
+        res.locals.clearance = req.user.clearance;
+        if (req.user.clearance === 'uberUser') {
+            res.locals.uberUser = true;
+        } else if (req.user.clearance === 'radUser') {
+            res.locals.radUser = true;
+        } else if (req.user.clearance === 'adminUser') {
+            res.locals.adminUser = true;
+        } else {
+            res.locals.generalUser = true;
+        };
+    };
     res.locals.currentPath = req.path;
     next();
 });
@@ -83,6 +97,8 @@ app.use((req, res, next) => {
 
 // MIDDLEWARE PRIOR TO ROUTES
 
+
+// ------DEPRECATED ----------
 // MIDDLEWARE TO MAKE USER ID AVAILABLE IN TEMPLATES
 // sets current userId to the currentUser variable to use in pug templates
 // This is for the UBERUSER

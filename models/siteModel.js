@@ -42,7 +42,8 @@ const SiteSchema = new mongoose.Schema({
     },
     author: {
         type: mongoose.Schema.ObjectId,
-        ref: 'UserPassport',
+        // ref: 'UserPassport',
+        ref: 'User',
         required: 'You must supply an author'
     },
     created: { type: Date, default: Date.now }

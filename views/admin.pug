@@ -1,0 +1,28 @@
+extends layout 
+
+block content 
+
+    .container.p-4
+        h4.my-4= title
+        .row 
+            form.container.p-3(action='/adminProfileEdit' method="POST")
+                //- POST SPECIFIC USER TO FORM SO I CAN EDIT
+                .form-floating.mb-3
+                    select.form-select(type="text" name="user")
+                        each user in users 
+                            option(value=user._id)= user.firstName + ' ' + user.lastName
+                    label.form-label(for="specialty") Pick User to Edit
+                input.form-input.form-button(type="submit" value="Edit Selected User Profile ->")
+        
+        .row.my-4 
+            a.form-button(href='/register') Register user
+        .row.my-4 
+            a.form-button(href='/contactAdd') Add Contact
+        .row.my-4 
+            a.form-button(href='/vacationAdd') Add Vacation
+        .row.my-4 
+            a.form-button(href='/honeyBadgerAdd') Add Nighthawk
+        .row.my-4 
+            a.form-button(href='/resourceAdd') Add Resource
+        .row.my-4
+            a.form-button(href="/quoteGet") Add Quote
