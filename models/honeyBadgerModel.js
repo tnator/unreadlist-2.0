@@ -8,9 +8,10 @@ const honeyBadgerSchema = new mongoose.Schema({
     payer: { type: String },
     rate: { type: Number },
     fee: { type: Number },
-    assigned: { type: String }
+    assigned: { type: String },
+    createdAt: { type: Date, default: Date.now }
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 

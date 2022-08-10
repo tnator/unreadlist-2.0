@@ -10,25 +10,38 @@ mixin resourcesDisplay(resource = {})
     //-             a.col.center.fs-4(href=`/resources/${item._id}/delete`)
     //-                 i.bi.bi-x-square
 
-
-    table.table.table-striped.table-hover.text-center
-        thead 
-            tr 
-                th.link(scope="col") Hyperlink 
-                th.notes(scope="col") Notes
-                if uberUser
-                    th.edit(scope="col") Edit
-                    th.delete(scope="delete") Delete
-        tbody 
-            each item in resource
-                tr.link 
-                    td.labelName
-                        a(href=item.url)= item.labelName
-                    td.notesUrl= item.notes
+    .container.table-container
+        table.table
+            thead 
+                tr.table-row
+                    th.resource-link(scope="col") Hyperlink 
+                    th.resource-notes(scope="col") Notes
                     if uberUser
-                        td.edit
-                            a.text-success(href=`/resources/${item._id}/edit`)
-                                i.bi.bi-pencil-square
-                        td.delete
-                            a.text-danger(href=`/resources/${item._id}/delete`)
-                                i.bi.bi-x-square
+                        th.resource-edit(scope="col") Edit
+                        th.resource-delete(scope="delete") Delete
+            tbody 
+                each item in resource
+                    //- tr.table-row.resource-link 
+                    //-     td
+                    //-         a.resource-link(href=item.url)= item.labelName
+                    //-     td.resource-notes= item.notes
+                    //-     if uberUser
+                    //-         td.edit
+                    //-             a.resource-edit(href=`/resources/${item._id}/edit`)
+                    //-                 i.bi.bi-pencil-square
+                    //-         td.delete
+                    //-             a.resource-delete(href=`/resources/${item._id}/delete`)
+                    //-                 i.bi.bi-x-square
+                    
+                    tr.table-row 
+                        td.resource-block
+                            a.resource-link(href=item.url)= item.labelName
+                        td.resource-block
+                            a.resource-notes= item.notes
+                        if uberUser
+                            td.edit
+                                a.resource-edit(href=`/resources/${item._id}/edit`)
+                                    i.bi.bi-pencil-square
+                            td.delete
+                                a.resource-delete(href=`/resources/${item._id}/delete`)
+                                    i.bi.bi-x-square

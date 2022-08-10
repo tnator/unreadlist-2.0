@@ -1,47 +1,72 @@
 mixin contactCard(contact = {})
 
     //- main, er, stroke, readingroom, radiology, it, staff, unit, administration
-
+    - var contactText = '';
     each tag in contact.tag
         -   
-            if (tag === 'er') {
-                contactText = 'text-radred';
+            if (tag === 'er') { 
+                contactText = 'text-radred'; 
             } else if (tag === 'stroke') {
                 contactText = 'text-radred';
+            } else if (tag === 'radiology') {
+                contactText = 'text-radgreen';
             } else if (tag === 'readingroom') {
-                contactText = 'text-radblue';
+                contactText = 'text-radgreen';
             } else if (tag === 'main') {
-                contactText = 'text-radblack';
+                contactText = 'text-radblue';
             } else if (tag === 'administration') {
                 contactText = 'text-radyellow';
-            } else {
+            } else if (tag === 'trauma') {
+                contactText = 'text-radbrown';
+            } else if (tag === 'it') {
+                contactText = 'text-radorange';
+            } else if (tag === 'staff') {
+                contactText = 'text-radyellow';
+            } else if (tag === 'unit') {
                 contactText = 'text-radblack';
             }
         
-    .row.p-0.m-0
-        a.panel-contact.col-md(href=`tel:1-${contact.phoneNum}` class=`${contactText}`)
-            .row.zero
-                .col-2.panel-contact-logo
+    .row.panel-contact-row
+        a.panel-contact.col(href=`tel:${contact.phoneNum}`)
+            .row.panel-label-row
+                .col-2.panel-contact-logo(class=`${contactText}`)
                     each tag in contact.tag
                         if tag === 'er'
                             .fw-bold ER 
                         else if tag === 'stroke'
-                            i.fa-solid.fa-brain.fa-xl
+                            i.fa-light.fa-brain.fa-xl
+                        else if tag === 'radiology'
+                            i.fa-light.fa-radiation.fa-xl
+                        else if tag === 'trauma'
+                            i.fa-light.fa-users-medical.fa-xl
                         else if tag === 'readingroom'
-                            i.fa-solid.fa-desktop.fa-xl
+                            i.fa-light.fa-desktop.fa-xl
                         else if tag === 'administration'
-                            i.fa-solid.fa-circle-user.fa-xl
+                            i.fa-light.fa-circle-user.fa-xl
+                        else if tag === 'it'
+                            i.fa-light.fa-user-headset.fa-xl
+                        else if tag === 'staff'
+                            i.fa-light.fa-user.fa-xl
+                        else if tag === 'main'
+                            i.fa-light.fa-building.fa-xl
                 if uberUser
                     .col-8
-                        .panel-contact-label= contact.numLabel
-                        .panel-contact-num= contact.phoneNum
+                        .panel-contact-label.text-truncate= contact.numLabel
+                        - var phoneNum = contact.phoneNum 
+                        - var num = phoneNum.replace(/^\+[0-9]/, '');
+                        - var num = num.replace(/(\d{3})(\d{3})(\d{4})/, "($1)-$2-$3");
+                        .panel-contact-num= num
                 else 
                     .col-10
-                        .panel-contact-label= contact.numLabel
-                        .panel-contact-num= contact.phoneNum
+                        .panel-contact-label.text-truncate= contact.numLabel
+                        - var phoneNum = contact.phoneNum 
+                        - var num = phoneNum.replace(/^\+[0-9]/, '');
+                        - var num = num.replace(/(\d{3})(\d{3})(\d{4})/, "($1)-$2-$3");
+                        .panel-contact-num= num
         if uberUser
-            a.col-2.center(href=`/contacts/${contact._id}/edit`) Edit
-
+            a.panel-contact-edit.p-0.col-2.center(href=`/contacts/${contact._id}/edit`)
+                p.m-0.pe-2= contact.index
+                i.fa-solid.fa-pen-to-square.fa-lg
         //- if !user
         //-     .row.w-100.m-0.p-0
         //-         #phoneLabel.col-7.p-0.text-radblue= contact.numLabel

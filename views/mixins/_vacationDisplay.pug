@@ -1,89 +1,76 @@
-mixin vacationDisplay(vacationItem = {})
+mixin vacationDisplay(week = {})
 
-    //- JAVASCRIPT STARTDATE
-    - const startDateSaved = vacationItem.startDate;
-    - const startDateISO = startDateSaved.toISOString().replace('.000Z', '');
-    - const startDateFull = new Date(startDateISO);
-    - const startYear = startDateFull.getFullYear();
-    - const startMonthNum = startDateFull.getMonth();
-    - const startDate = startDateFull.getDate();
-    - if (startMonthNum === 0) {
-    -     startMonth = "1";
-    - } else if (startMonthNum === 1) {
-    -     startMonth = "2";
-    - } else if (startMonthNum === 2) {
-    -     startMonth = "3";
-    - } else if (startMonthNum === 3) {
-    -     startMonth = "4";
-    - } else if (startMonthNum === 4) {
-    -     startMonth = "5";
-    - } else if (startMonthNum === 5) {
-    -     startMonth = "6";
-    - } else if (startMonthNum === 6) {
-    -     startMonth = "7";
-    - } else if (startMonthNum === 7) {
-    -     startMonth = "8";
-    - } else if (startMonthNum === 8) {
-    -     startMonth = "9";
-    - } else if (startMonthNum === 9) {
-    -     startMonth = "10";    
-    - } else if (startMonthNum === 10) {
-    -     startMonth = "11";
-    - } else {
-    -     startMonth = "12";
-    - }
-    - const startDateDisplay = startMonth + '/' + startDate;
+    - const currentDate = new Date();
 
-    //- JAVASCRIPT ENDDATE
-    - const endDateSaved = vacationItem.endDate;
-    - const endDateISO = endDateSaved.toISOString().replace('.000Z', '');
-    - const endDateFull = new Date(endDateISO);
-    - const endYear = endDateFull.getFullYear();
-    - const endMonthNum = endDateFull.getMonth();
-    - const endDate = endDateFull.getDate();
-    - if (endMonthNum === 0) {
-    -     endMonth = "1";
-    - } else if (endMonthNum === 1) {
-    -     endMonth = "2";
-    - } else if (endMonthNum === 2) {
-    -     endMonth = "3";
-    - } else if (endMonthNum === 3) {
-    -     endMonth = "4";
-    - } else if (endMonthNum === 4) {
-    -     endMonth = "5";
-    - } else if (endMonthNum === 5) {
-    -     endMonth = "6";
-    - } else if (endMonthNum === 6) {
-    -     endMonth = "7";
-    - } else if (endMonthNum === 7) {
-    -     endMonth = "8";
-    - } else if (endMonthNum === 8) {
-    -     endMonth = "9";
-    - } else if (endMonthNum === 9) {
-    -     endMonth = "10";    
-    - } else if (endMonthNum === 10) {
-    -     endMonth = "11";
-    - } else {
-    -     endMonth = "12";
-    - }
-    - const endDateDisplay = endMonth + '/' + endDate;
+    - var startDate = week.startDate;
+    - var startOffset = startDate.getTimezoneOffset() / 60;
+    - var startHours = startDate.getHours();
+    - var startHours = startHours + startOffset;
+    - startDate.setHours(startHours,00,00);
+    - var startDateData = startDate.toISOString();
+    - var startMonth = startDate.getMonth() + 1;
+    - var startDay = startDate.getDate();
+    - var startDateDisplay = startMonth + '/' + startDay;
 
-    tr.vacationWeek(class="")
+    - var endDate = week.endDate;
+    - var endOffset = endDate.getTimezoneOffset() / 60;
+    - var endHours = endDate.getHours();
+    - var endHours = endHours + endOffset;
+    - endDate.setHours(endHours,00,00);
+    - var endDateData = endDate.toISOString();
+    - var endMonth = endDate.getMonth() + 1;
+    - var endDay = endDate.getDate();
+    - var endDateDisplay = endMonth + '/' + endDay;
+
+    //- VACATION ROW MIXIN
+    mixin vacationRow
         if uberUser 
-            th.vacationWeek.table-info(scope="row")
-                a(href=`/vacation/${vacationItem._id}/edit`)= vacationItem.weekNum
+            th.vacation-week.text-shrink.active-cell(scope="row")
+                a.vacation-week(href=`/vacation/${week._id}/edit`)= week.weekNum
         else 
-            th.table-info(scope="row")= vacationItem.weekNum  
-        td.startVacation.table-primary= startDateDisplay 
-        td.endVacation.table-primary= endDateDisplay 
-        td.slot.slotA(class=vacationItem.slotA.toLowerCase())= vacationItem.slotA
-        td.slot.slotB(class=vacationItem.slotB.toLowerCase())= vacationItem.slotB
-        td.slot.slotC(class=vacationItem.slotC.toLowerCase())= vacationItem.slotC
-        td.slot.slotD(class=vacationItem.slotD.toLowerCase())= vacationItem.slotD
-        td.slot.slotE(class=vacationItem.slotE.toLowerCase())= vacationItem.slotE
-        td.slot.slotF(class=vacationItem.slotF.toLowerCase())= vacationItem.slotF
+            th.vacation-week.text-shrink.active-cell(scope="row")= week.weekNum
+        td.vacation-date.text-shrink= startDateDisplay
+        td.vacation-date.text-shrink.mobile-hide= endDateDisplay
+        td.vacation-slot.slotA.text-shrink(class=week.slotA.toLowerCase())= week.slotA.toUpperCase()
+        td.vacation-slot.slotB.text-shrink(class=week.slotB.toLowerCase())= week.slotB.toUpperCase()
+        td.vacation-slot.slotC.text-shrink(class=week.slotC.toLowerCase())= week.slotC.toUpperCase()
+        td.vacation-slot.slotD.text-shrink(class=week.slotD.toLowerCase())= week.slotD.toUpperCase()
+        td.vacation-slot.slotE.text-shrink(class=week.slotE.toLowerCase())= week.slotE.toUpperCase()
+        td.vacation-slot.slotF.text-shrink(class=week.slotF.toLowerCase())= week.slotF.toUpperCase()
+        td.vacation-slot.slotG.text-shrink(class=week.slotG.toLowerCase())= week.slotG.toUpperCase()
+        td.vacation-slot.slotH.text-shrink(class=week.slotH.toLowerCase())= week.slotH.toUpperCase()
         if uberUser
-            td.slot.notesVacation.table-primary= vacationItem.notes
-            td.delete.table-light
-                a.text-danger(href=`/vacation/${vacationItem._id}/delete`)
+            td.slot.vacation-notes.text-shrink.mobile-hide= week.notes
+            td.vacation-delete.text-light.mobile-hide
+                a.vacation-delete(href=`/vacation/${week._id}/delete`)
                     i.bi.bi-x-square
+    //- OLD SHIFTS
+    if week.endDate < currentDate
+        tr.table-row.collapse#collapseRowVacation
+            +vacationRow
+    //- ACTIVE SHIFT
+    else if currentDate >= week.startDate && currentDate <= week.endDate
+        tr.table-row.active-row(data-startDate=startDateData data-endDate=endDateData)
+            +vacationRow
+    //- FUTURE SHIFTS
+    else
+        tr.table-row(data-startDate=startDateData data-endDate=endDateData)
+            +vacationRow
+
+
+
+        
+
+
+
+
+
+        //- td.vacation-slot.slotA.text-shrink(class=week.slotA.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotA.firstName + ' ' + week.slotA.lastName)= week.slotA.initials
+        //- td.vacation-slot.slotB.text-shrink(class=week.slotB.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotB.firstName + ' ' + week.slotB.lastName)= week.slotB.initials
+        //- td.vacation-slot.slotC.text-shrink(class=week.slotC.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotC.firstName + ' ' + week.slotC.lastName)= week.slotC.initials
+        //- td.vacation-slot.slotD.text-shrink(class=week.slotD.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotD.firstName + ' ' + week.slotD.lastName)= week.slotD.initials
+        //- td.vacation-slot.slotE.text-shrink(class=week.slotE.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotE.firstName + ' ' + week.slotE.lastName)= week.slotE.initials
+        //- td.vacation-slot.slotF.text-shrink(class=week.slotF.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotF.firstName + ' ' + week.slotF.lastName)= week.slotF.initials
+        //- td.vacation-slot.slotG.text-shrink(class=week.slotG.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotG.firstName + ' ' + week.slotG.lastName)= week.slotG.initials
+        //- td.vacation-slot.slotH.text-shrink(class=week.slotH.initials data-bs-toggle="tooltip" data-bs-placement="bottom" title=week.slotH.firstName + ' ' + week.slotH.lastName)= week.slotH.initials
+        

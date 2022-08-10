@@ -1,26 +1,24 @@
 //- NAVLIST FOR INSERTION INTO HEADER.PUG
 
-//- li.nav-item
-//-     a.nav-link(href='/') Home
-li
-    a.primary-nav-link(href='/contacts') Contacts
-li
-    a.primary-nav-link(href='/vacation') Vacation
-li
-    a.primary-nav-link(href='/honeyBadger') Nighthawk
-    //- i.fa-duotone.fa-badger-honey.fa-lg
-li
-    a.primary-nav-link(href='/resources') Resources
-if uberUser
-    //- DO NOT DELETE !!!!!!!!!
-    //- li
-    //-     a.primary-nav-link(href='/sites') Sites
-    //- li.bottom
-    //-     a.heart.p-2.text-danger(href="/hearts")
-    //-         i.fa-solid.fa-heart.fa-lg.mx-1
-    //-         span.heart-count #{user.hearts && user.hearts.length}
-    //- li 
-    //-     a.primary-nav-link(href='/register') Register
-    li 
-        a.primary-nav-link(href='/admin') Admin
-    
+mixin navLinks
+    li.nav-li
+        a.primary-nav-link(href='/contacts') Contacts
+    li.nav-li
+        a.primary-nav-link(href='/vacation') Vacation
+    li.nav-li
+        a.primary-nav-link(href='/honeyBadger') Nighthawk
+        //- i.fa-duotone.fa-badger-honey.fa-lg
+    li.nav-li
+        a.primary-nav-link(href='/resources') Resources
+    if uberUser
+        //- DO NOT DELETE !!!!!!!!!
+        //- li
+        //-     a.primary-nav-link(href='/sites') Sites
+        //- li.bottom
+        //-     a.heart.p-2.text-danger(href="/hearts")
+        //-         i.fa-solid.fa-heart.fa-lg.mx-1
+        //-         span.heart-count #{user.hearts && user.hearts.length}
+        //- li 
+        //-     a.primary-nav-link(href='/register') Register
+        li.nav-li
+            a.primary-nav-link(href='/admin') Admin

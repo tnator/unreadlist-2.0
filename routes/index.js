@@ -6,7 +6,8 @@ const authController = require('../controllers/authController');
 const reviewController = require('../controllers/reviewController');
 const honeyBadgerController = require('../controllers/honeyBadgerController');
 const adminController = require('../controllers/adminController');
-
+const statsController = require('../controllers/statsController');
+const smsController = require('../controllers/smsController');
 
 const { catchErrors } = require('../handlers/errorHandlers');
 // formatting as below tells express to use index file in the folder
@@ -15,16 +16,20 @@ const { Router } = require('express');
 
 // ADMIN ROUTES
 router.get('/admin', authController.isUberUser, adminController.admin);
+// router.get('/admin', adminController.admin);
+
 router.post('/adminProfileEdit', authController.isUberUser, adminController.adminProfileEdit);
+// router.post('/adminProfileEdit', adminController.adminProfileEdit);
 
 // GENERAL ROUTES
-router.get('/', controller.homePage);
+router.get('/', controller.index);
+router.get('/indexMy', authController.isLoggedIn, catchErrors(controller.indexMy));
 router.get('/quoteGet', authController.isUberUser, catchErrors(controller.quoteForm));
 router.post('/quoteSave', catchErrors(controller.quoteCreate));
 router.get('/error', controller.error);
 
 // CONTACT ROUTES
-router.get('/contacts', catchErrors(controller.contactsGet));
+router.get('/contacts', authController.isLoggedIn, catchErrors(controller.contactsGet));
 router.get('/contacts/:id/edit', catchErrors(controller.contactEdit));
 router.get('/contactAdd', authController.isLoggedIn, catchErrors(controller.contactAdd));
 router.post('/contactAdd', catchErrors(controller.contactCreate));
@@ -42,7 +47,7 @@ router.get('/vacation/:id/delete',
 );
 
 // HONEYBADGER routes
-router.get('/honeyBadger', catchErrors(honeyBadgerController.honeyBadgerDisplay));
+router.get('/honeyBadger', authController.isLoggedIn, catchErrors(honeyBadgerController.honeyBadgerDisplay));
 router.get('/honeyBadgerAdd', authController.isUberUser, catchErrors(honeyBadgerController.honeyBadgerAdd));
 router.get('/honeyBadger/:id/edit',
     authController.isUberUser,
@@ -106,20 +111,24 @@ router.get('/tags/:tag', catchErrors(controller.getSitesByTag));
 // PASSPORT LOGIN ROUTES
 router.get('/loginPassport', userController.loginForm);
 router.post('/loginPassport', authController.login);
-router.get('/register', authController.isUberUser, userController.registerForm);
+// router.get('/register', authController.isUberUser, userController.registerForm);
+router.get('/register', userController.registerForm);
 router.post('/register',
     userController.validateRegister,
     userController.register,
-    authController.login
+    // authController.login
 );
 router.get('/logoutPassport', authController.logout);
 router.get('/profileDisplay',
     authController.isLoggedIn,
     userController.profileDisplay
 );
-router.get('/profileEdit', authController.isUberUser, userController.profileEdit);
+// router.get('/profileEdit', authController.isUberUser, userController.profileEdit);
+router.get('/profileEdit', userController.profileEdit);
 router.get('/profileEdit/:id', catchErrors(userController.profileEdit));
-router.post('/profileEdit', authController.isUberUser, catchErrors(userController.profileUpdate));
+// router.post('/profileEdit', authController.isUberUser, catchErrors(userController.profileUpdate));
+router.post('/profileEdit', catchErrors(userController.profileUpdate));
+// router.get('/profile/:id/delete', authController.isUberUser, catchErrors(userController.profileDelete));
 router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/account/reset/:token', catchErrors(authController.reset));
 router.post('/account/reset/:token',
@@ -140,7 +149,13 @@ router.get('/api/sites/near', catchErrors(controller.mapSites));
 router.post('/api/sites/:id/heart', catchErrors(controller.heartSite));
 
 // SMS
-router.get('/sms', catchErrors(controller.smsGet));
-router.post('/sms', catchErrors(controller.smsPost));
+router.get('/sms', catchErrors(smsController.sms));
+router.post('/sms', catchErrors(smsController.smsSchedule));
+
+
+// STATISTICS
+router.get('/stats', catchErrors(statsController.statsDisplay));
+router.get('/statsForm', catchErrors(statsController.statsForm));
+router.post('/statsAdd', catchErrors(statsController.statsAdd));
 
 module.exports = router;

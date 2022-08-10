@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // const { BulkOperationBase } = require('mongoose/node_modules/mongodb');
 const Contact = mongoose.model('Contact');
 const Vacation = mongoose.model('Vacation');
+const HoneyBadger = mongoose.model('HoneyBadger');
 const Resource = mongoose.model('Resource');
 const User = mongoose.model('User');
 const Site = mongoose.model('Site');
@@ -34,10 +35,29 @@ const multerOptions = {
 };
 
 // LOADS INDEX HOMEPAGE
-exports.homePage = async (req, res) => {
-    // const quotes = await Quote.find({ });
+exports.index = async (req, res) => {
+    res.render('index', { title: 'Home' })
+};
+exports.indexMy = async (req, res) => {
+    const profile = req.user
+    const contacts = await Contact.find({ $or: [
+        {tag: 'er'},
+        {tag: 'stroke'},
+        {tag: 'trauma'}
+    ] });
+    const shiftsUser = await HoneyBadger.find({ assigned: profile.initials });
+    // const vacationUser = await Vacation.find({ $or: [
+    //     {slotA: profile.initials},
+    //     {slotB: profile.initials},
+    //     {slotC: profile.initials},
+    //     {slotD: profile.initials},
+    //     {slotE: profile.initials},
+    //     {slotF: profile.initials},
+    //     {slotG: profile.initials},
+    //     {slotH: profile.initials},
+    // ] });
     const quotes = await Quote.aggregate([ {$sample:{size:1}} ]);
-    res.render('index', { title: 'Home', quotes });
+    res.render('indexMy', { title: 'Home', contacts, shiftsUser, quotes });
 };
 exports.quoteForm = async (req, res) => {
     res.render('quoteForm', { title: 'Add Quote' });
@@ -57,38 +77,81 @@ exports.contactAdd = async (req, res) => {
     res.render('contactAdd', { title: 'Add Contact' });
 };
 exports.contactCreate = async (req, res) => {
-    // will only pick up form fields described in the schema
-    const contact = new Contact(req.body);
+    console.log(req.body);
+    var phoneString = req.body.phoneNum;
+    var phoneNoDash = phoneString.replace(/-/g, '');
+    var iCode = '+1';
+    var phoneNum = iCode.concat(phoneNoDash);
+    const contact = new Contact({
+        division: req.body.division,
+        site: req.body.site,
+        acronym: req.body.acronym,
+        numLabel: req.body.numLabel,
+        phoneNum: phoneNum,
+        tag: req.body.tag,
+        index: req.body.index,
+    });
     await contact.save();
     console.log('Contact created');
     res.redirect('/contacts');
 };
 exports.contactsGet = async (req, res) => {
-    const contacts = await Contact.find({ });
+    const contacts = await Contact.find({ }).sort({ index: 1 });
+    const rads = await User
+        .find( { $or: [ { clearance: "uberUser" }, { clearance: "radUser" } ] } )
+        .sort( { lastName : 1 } );
+
     // array Determines order of display on page
-    const siteArray = [
+    const hospitalArray = [
+        // 0s
         ['Ocala Regional Medical Center', 'ORMC'],
+        // 100s
         ['West Marion Hospital', 'WMH'],
+        // 200s
         ['Advent Hospital', 'AH'],
+        // 300s
         ['Seven Rivers Hospital', 'SRMC'],
+        // 400s
+        ['Schneider Regional Medical Ctr', 'USVIST'],
+        // 500s
+        ['Juan F. Luis Medical Center', 'USVISC'],
+    ];
+    const erClinicArray = [
+        // 600s
         ['Belleview ER', 'BVER'],
+        // 610s
         ['Citrus Hills ER', 'CHER'],
+        // 620s
         ['Maricamp ER', 'MCER'],
+        // 630s
         ['Summerfield ER', 'SMER'],
+        // 640s
         ['Timberridge ER', 'TRER'],
+        // 650s
         ['Trailwinds ER', 'TWER'],
-        ['US Virgin Islands', 'USVI'],
-        ['Advanced Imaging Center', 'AI'],
-        ['Medical Imaging Center', 'MIC'],
-        ['Timberridge Imaging Center', 'TIC'],
-        ['Women\'s Imaging Center', 'WIC'],
+        // 660s
         ['Express Care', 'EC'],
+    ];
+    const outpatientArray = [
+        // 700s
+        ['Advanced Imaging Center', 'AI'],
+        // 800s
+        ['Medical Imaging Center', 'MIC'],
+        // 900s
+        ['Timberridge Imaging Center', 'TIC'],
+        // 1000s
+        ['Women\'s Imaging Center', 'WIC'],
+        // 1100s
         ['Heart of Florida', 'HOF'],
+        // 1200s
         ['Operations', 'OP']
     ];
     res.render('contacts', { title: 'Contacts',
         contacts,
-        siteArray,
+        rads,
+        hospitalArray,
+        erClinicArray,
+        outpatientArray
     });
 };
 exports.contactEdit = async (req, res) => {
@@ -98,6 +161,18 @@ exports.contactEdit = async (req, res) => {
 
 };
 exports.contactUpdate = async (req, res) => {
+    var iCode = '+1';
+    var string = req.body.phoneNum;
+    if (string.includes('-')) {
+        var noDash = string.replace(/-/g, '');
+    } else {
+        var noDash = string;
+    };
+    if (string.includes(iCode)) {
+        req.body.phoneNum = noDash;
+    } else {
+        req.body.phoneNum = iCode.concat(noDash);
+    };
     const contact = await Contact.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true, //return theh new contact instead of old contact
         runValidators: true //forces model to run the required fields
@@ -132,30 +207,81 @@ exports.searchContacts = async (req, res) => {
 // VACATION CONTROLLER OPERATIONS
 exports.vacationGet = async (req,res) => {
     const profile = req.user;
-    const vacation = await Vacation.find({}).sort({ "weekNum" : 1 });
-    const myVacation = await Vacation.find({ $or: [
+    const vacation = await Vacation
+        .find({ })
+        // .populate('slotA slotB slotC slotD slotE slotF slotG slotH')
+        .sort({ 'weekNum': 1 });
+    const vacationUser = await Vacation.find({ $or: [
         {slotA: profile.initials},
         {slotB: profile.initials},
         {slotC: profile.initials},
         {slotD: profile.initials},
         {slotE: profile.initials},
         {slotF: profile.initials},
+        {slotG: profile.initials},
+        {slotH: profile.initials},
     ]});
-    res.render('vacation', { title: 'Vacation', vacation, myVacation});
+    const users = await User
+        .find({})
+        .sort({ 'lastName': 1 });
+    
+    // const count = await Vacation.count({ $or: [
+    //     {slotA: 'rkt'},{slotB: 'rkt'},{slotC: 'rkt'},{slotD: 'rkt'},{slotE: 'rkt'},{slotF: 'rkt'},{slotG: 'rkt'},{slotH: 'rkt'}
+    // // ], [
+    // //     {slotA: 'crr'},{slotB: 'crr'},{slotC: 'crr'},{slotD: 'crr'},{slotE: 'crr'},{slotF: 'crr'},{slotG: 'crr'},{slotH: 'crr'}
+    // ]});
+
+    // const count2 = await Vacation.aggregate([
+    //     { $group: {slotA:'rkt', count: { $sum:1 }}}
+    // ])
+    // consolt.log(count2);
+
+    res.render('vacation', { title: 'Vacation 2022', profile, vacation, vacationUser, users});
 };
 exports.vacationAdd = async (req,res) => {
-    res.render('vacationAdd', { title: 'Vacation Add Page' });
+    const users = await User
+        .find({})
+        .sort({ 'lastName': 1 });
+    const vacation = await Vacation
+        .find({})
+        .sort({ 'weekNum': -1 })
+        .limit(1);
+    res.render('vacationAdd', { title: 'Vacation Add Page', users, vacation });
 };
 exports.vacationCreate = async (req, res) => {
-    // will only pick up form fields described in the schema
-    const vacation = new Vacation(req.body);
+    // var start = new Date(req.body.startDate);
+    // var startDateOffset = start.getTimezoneOffset() / 60;
+    // var end = new Date(req.body.endDate);
+    // var endDateOffset = end.getTimezoneOffset() / 60;
+    const vacation = new Vacation({
+        weekNum: req.body.weekNum,
+        startDate: req.body.startDate,
+        // startDate: req.body.startDate,
+        // startDateOffset: startDateOffset,
+        endDate: req.body.endDate,
+        // endDateOffset: endDateOffset,
+        slotA: req.body.slotA,
+        slotB: req.body.slotB,
+        slotC: req.body.slotC,
+        slotD: req.body.slotD,
+        slotE: req.body.slotE,
+        slotF: req.body.slotF,
+        slotG: req.body.slotG,
+        slotH: req.body.slotH,
+        notes: req.body.notes
+    });
     await vacation.save();
     res.redirect('/vacation');
 };
 exports.vacationEdit = async (req, res) => {
-    const vacationWeek = await Vacation.findOne({ _id: req.params.id });
+    const week = await Vacation
+        .findOne({ _id: req.params.id })
+        // .populate('slotA slotB slotC slotD slotE slotF slotG slotH');
+    const users = await User
+        .find({})
+        .sort({ 'lastName': 1 });
     // render edit form so can update/edit
-    res.render('vacationAdd', { title: `Editing Week ${vacationWeek.weekNum}`, vacationWeek });
+    res.render('vacationAdd', { title: `Editing Week ${week.weekNum}`, week, users });
 };
 exports.vacationUpdate = async (req, res) => {
     const contact = await Vacation.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -464,32 +590,4 @@ exports.getHearts = async (req, res) => {
     });
     // res.json(sites);
     res.render('sites', { title: 'Hearted Sites', sites: sites });
-};
-
-// CONNECT TO TWILIO MESSAGING
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioNumber = process.env.TWILIO_NUMBER;
-const twilio = require('twilio')(accountSid, authToken);
-const sosArray = ['+13528710240'];
-
-// SMS CONTROLLERS
-exports.smsGet = async (req, res) => {
-    res.render('sms', { title: 'SMS' });
-};
-exports.smsPost = async (req, res) => {
-        Promise.all(
-        sosArray.map(sos => {
-            return twilio.messages.create({
-                to: sos,
-                from: twilioNumber,
-                body: req.body.sms
-            });
-        })
-    )
-    .then(messages => {
-        console.log('Messages Sent!');
-    })
-    .catch(err => console.error(err));
-    res.render('sms', { title: 'Send Message (SMS) Page' });
 };

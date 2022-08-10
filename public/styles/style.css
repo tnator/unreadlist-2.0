@@ -24,6 +24,7 @@
     --radblue-300: #5c84a1;
     --radblue-200: #85a3b9;
     --radblue-100: #adc1d0;
+    --radgreen: #198754;
     /* SECONDARY HEADINGS */
     --radyellow: #F6AE2D;
     /* ACCENT HEADINGS AND TEXT */
@@ -93,11 +94,15 @@
 }
 .text-radwhite { color: var(--radwhite); }
 .text-radblack { color: var(--radblack); }
-.text-radblue { color: var(--radblue); }
-.text-radyellow { color: var(--radyellow); }
-.text-radred { color: var(--radred); }
+.text-radblue { color: var(--apple-blue-lightbg); }
+.text-radgreen { color: var(--apple-green-lightbg); }
+.text-radyellow { color: var(--apple-yellow-lightbg); }
+.text-radorange { color: var(--apple-orange-lightbg); }
+.text-radred { color: var(--apple-red-lightbg); }
+.text-radbrown { color: var(--apple-brown-lightbg); }
 .text-mobile { font-size: smaller;}
 
+.bg-light { background-color: var(--light);}
 .bg-radwhite { background-color: var(--radwhite); }
 .bg-radblack { background-color: var(--radblack); }
 .bg-radblue { background-color: var(--radblue); }
@@ -202,6 +207,21 @@
 .font-icon-color-white {
     /* apple system gray 6 */
     color: var(--radwhite);
+}
+.font-icon-large {
+    font-size: 2em;
+}
+html {
+    width: 100%;
+}
+body {
+    width: 100%;
+    min-height: 100%;
+    /* background: rgb(255,255,255);
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(152,152,152,1) 100%); */
+
+    background: rgb(247,247,247);
+    background: linear-gradient(180deg, rgba(247,247,247,1) 0%, rgba(198,198,198,1) 100%);
 }
 
 /* FONTS */
@@ -309,10 +329,9 @@ h6 {
 }
 /* END FONTS */
 
-ul {
+li {
     list-style-type: none;
 }
-
 #radase {
     font-family: 'Quicksand', sans-serif;
     font-weight: medium;
@@ -320,6 +339,7 @@ ul {
     letter-spacing: 1.5px;
 }
 #mobileTitle {
+    display: none;
     color: var(--apple-gray-lightbg);
     font-size: 1.1rem;
 }
@@ -329,6 +349,61 @@ ul {
 }
 .collapse__header {
     font-size: 1.3 rem;
+}
+
+/* NAVBAR SPECIFIC CSS */
+#nav-login-col {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+}
+#nav-profile-icon {
+    padding: 3 15 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.nav-login-logout {
+    width: auto;
+}
+.navbar-brand {
+    margin-right: 0;
+}
+
+/* INDEX PAGE SPECIFIC CSS */
+#index-container {
+    height: 100%;
+}
+#index-info-row {
+    width: 100%;
+    height: 5%;
+}
+#index-time-col {
+    padding: 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+#index-time-col p {
+    margin: 0;
+    padding: 0;
+}
+#index-hello-col {
+    padding: 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+#index-main-row {
+    width: 21rem;
+    height: 85%;
+}
+#index-quote-row {
+    width: 100%;
+    height: 15%;
 }
 
 /* QUOTES FOR INDEX PAGE - info from css tricks */
@@ -350,7 +425,7 @@ blockquote {
 
 
 /* CONTACTS CSS START ------------------------*/
-.contact-container-left {
+/* .contact-container-left {
     height: 90vh;
     display: flex;
     flex-direction: column;
@@ -360,41 +435,56 @@ blockquote {
 }
 .contact-container-right {
     background-color: var(--radwhite);
-}
+} */
 .site-container {
     margin: 0.7rem 0;
     padding: 0;
     border-style: solid;
-    border-color: var(--apple-blue-lightbg);
-    border-radius: 5px;
+    /* border-color: var(--apple-blue-lightbg); */
+    border-radius: 3px;
     border-width: 3px;
-    background-color: var(--radwhite);
-    /* background-color: var(--apple-blue-lightbg-opacity10); */
+    background-color: var(--bg-light);
 }
+.site-container.site-container-hospital { border-color: var(--apple-blue-lightbg); }
+.site-container.site-container-erClinic { border-color: var(--apple-red-lightbg); }
+.site-container.site-container-outpatient { border-color: var(--apple-green-lightbg); }
+
 .site-accordion {
+    display: inline-block;
     width: 100%;
     margin: 0;
-    padding: 12px;
+    padding: 8 10;
     background-color: transparent;
-    color: var(--apple-blue-lightbg);
     text-align: left;
     outline: none;
     font-size: 1.2rem;
     font-weight: bold;
-    transition: 0.3s;
+    transition: 0.2s;
     cursor: pointer;
 }
-.active, .site-accordion:hover {
-    background-color: var(--apple-blue-lightbg);
-    color: var(--apple-gray6-lightbg);
-}
+
+
+.site-accordion-hospital { color: var(--apple-blue-lightbg); }
+.site-accordion-erClinic { color: var(--apple-red-lightbg); }
+.site-accordion-outpatient { color: var(--apple-green-lightbg); }
+
+.active, .site-accordion:hover { color: white; }
+
+.site-accordion-hospital.active { background-color: var(--apple-blue-lightbg); }
+.site-accordion-erClinic.active { background-color: var(--apple-red-lightbg); }
+.site-accordion-outpatient.active { background-color: var(--apple-green-lightbg); }
+
+.site-accordion-hospital:hover { background-color: var(--apple-blue-lightbg); }
+.site-accordion-erClinic:hover { background-color: var(--apple-red-lightbg); }
+.site-accordion-outpatient:hover { background-color: var(--apple-green-lightbg); }
+
 .site-accordion:after {
     content: '\002B';
-    color: var(--apple-blue-lightbg);
+    color: inherit;
     font-size: 1.2rem;
     font-weight: bold;
     float: right;
-    margin: 0 5;
+    margin: 0;
 }
 .active:after {
     content: '\2212';
@@ -412,8 +502,14 @@ blockquote {
     transition: max-height 0.2s ease-out;
 }
 
+.panel-contact-row {
+    background-color: white;
+}
+.panel-contact-row:hover {
+    background-color: var(--apple-gray6-lightbg);
+}
 
-.panel-contact {
+.panel-contact, .panel-contact-edit {
     /* width: 100%; */
     margin: 0;
     padding: 5 0;
@@ -422,8 +518,7 @@ blockquote {
     border-color: var(--apple-gray3-lightbg);
 }
 .panel-contact:hover {
-    background: var(--apple-blue-lightbg);
-    color: var(--apple-gray5-lightbg);
+    color: var(--radblack);
 }
 .panel-contact-logo {
     display: flex;
@@ -431,7 +526,8 @@ blockquote {
     align-items: center;
 }
 .panel-contact-label {
-    font-size: 1 rem;
+    display: block;
+    font-size: 1rem;
     font-weight: bold;
 }
 .panel-contact-num {
@@ -442,12 +538,8 @@ blockquote {
 
 /* CONTACTS CSS END*/
 
-/* ALIGNMENT ----------------------------------*/
-.start {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
+
 .search__results {
     padding: 10px;
     display: block;
@@ -456,6 +548,8 @@ blockquote {
 .search__results--active {
     background-color: #f1f1f1;
 }
+
+/* ALIGNMENT ----------------------------------*/
 .start {
     display: flex;
     justify-content: start;
@@ -504,7 +598,7 @@ blockquote {
 /*  LINKS STYLING  ------------------------------*/
 a { text-decoration: none; }
 
-li .primary-nav-link { margin: 1em 1em; }
+li { margin: 6px 10px 6px 0px };
 
 a.primary-nav-link { color: var(--radblack); }
 a.primary-nav-link:link { color: var(--radblack); }
@@ -591,9 +685,9 @@ a.apple-link:active { color: var(--apple-cyan-lightbg); }
 .custom-toggler.navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(39, 39, 39, 1)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 } */
-/* .slot {
-    background-color: var(--radwhite);
-} */
+.slot {
+    padding: 9.6 4.8;
+}
 .add {
     margin: 0.5rem;
 }
@@ -624,7 +718,7 @@ a.add:focus {
     background: purple;
 }
 
-#footer-mobile-container {
+/* #footer-mobile-container {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -660,7 +754,7 @@ a.footer-mobile-link:active {
     border-right-style: solid;
     border-right-color: var(--radwhite);
     border-right-width: 1px;
-}
+} */
 
 
 .search {
@@ -689,16 +783,23 @@ a.footer-mobile-link:active {
         background: #f1f1f1; }
 
 .is-hidden { display: none };
+.past {
+    text-decoration: line-through;
+    font-weight: 200;
+}
+.future {
+    text-decoration: none;
+}
 
 @media (max-width: 576px) {
-    /* .pageTitle {
+    .text-shrink {
+        font-size: 0.4rem;
+    }
+    /* #footer-container {
         display: none;
     } */
-    .text-shrink {
-        font-size: 0.5rem;
-    }
-    #footer-container {
-        display: none;
+    #mobileTitle {
+        font-size: 9.6px;
     }
 }
 @media (min-width: 576px) {
@@ -711,9 +812,14 @@ a.footer-mobile-link:active {
         display: none;
     }
 }
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     #mobileTitle {
         display: none;
+    }
+} */
+@media (min-width: 375px) and (max-width: 990px) {
+    #mobileTitle {
+        display: inline;
     }
 }
 

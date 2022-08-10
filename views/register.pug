@@ -26,8 +26,46 @@ block content
                             label.form-label(for="emailPrimary") Primary Email
                     .col-sm-6
                         .form-floating
-                            input.form-control(type="tel" name="phonePrimary" required)
+                            input.form-control.phone-number(type="tel" name="phonePrimary" minlength="12" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$" onkeydown="phoneNumberFormatter()" placeholder="_ _ _-_ _ _-_ _ _ _" required)
                             label.form-label(for="phonePrimary") Primary Phone
+                //- .row.mb-3.g-3 
+                //-     .col-sm-4
+                //-         .form-floating 
+                //-             //- input.form-control(type="text" value=profile.title name="title")
+                //-             //- label.form-label(for="title") Title
+                //-             select.form-select(type="text" name="title")
+                //-                 option(selected)= profile.title
+                //-                 option(value="Partner Radiologist") Partner Radiologist
+                //-                 option(value="Associate Radiologist") Associate Radiologist
+                //-                 option(value="Employed Radiologist") Employed Radiologist
+                //-                 option(value="Chief Executive Officer") CEO
+                //-                 option(value="Chief Financial Officer") CFO
+                //-                 option(value="Administrative Secretary") Administrative Secretary
+                //-                 option(value="Information Technologist") IT
+                //-             label.form-label(for="title") Title
+                //-     .col-sm-4
+                //-         .form-floating
+                //-             select.form-select(type="text" name="specialty")
+                //-                 option(selected)= profile.specialty
+                //-                 option(value="Body Imaging") Body Imaging
+                //-                 option(value="Cardiac Imaging") Cardiac Imaging
+                //-                 option(value="Chest / Thoracic Imaging") Chest/Thoracic Imaging
+                //-                 option(value="General Diagnostic Imaging") General Diagnostic
+                //-                 option(value="Interventional / Vascular") Interventional/Vascular
+                //-                 option(value="Mammography / Breast Imaging") Mammography/Breast
+                //-                 option(value="Musculoskeletal Imaging") Musculoskeletal Imaging
+                //-                 option(value="Neuroradiology") Neuroradiology
+                //-                 option(value="Nuclear Medicine") Nuclear Medicine
+                //-             label.form-label(for="specialty") Specialty
+                //-     .col-sm
+                //-         .form-floating
+                //-             select.form-select(type="text" name="clearance" required)
+                //-                 option(selected)= profile.clearance
+                //-                 option(value="uberUser") Uber user
+                //-                 option(value="radUser") Rad user
+                //-                 option(value="adminUser") Admin user
+                //-                 option(value="generalUser") General user
+                //-             label.form-label(for="clearance") Clearance Level
                 .row.mb-3.g-3 
                     .col-sm-6 
                         .form-floating 

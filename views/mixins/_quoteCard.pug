@@ -1,7 +1,5 @@
 mixin quoteCard(quotes = {})
-
-    .container
-        each val in quotes
-            figure
-                blockquote.blockquote.text-center.zero= val.quote
-                figcaption.blockquote-footer.text-center.zero= val.author
+    each val in quotes
+        figure
+            blockquote.blockquote.quote-text= '"' + val.quote + '"'
+            figcaption.blockquote-footer.quote-author= val.author

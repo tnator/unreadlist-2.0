@@ -1,16 +1,25 @@
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
 
-//  FIGURE OUT HOW TO REPLACE THE TOKENS BELOW IN ACTIVE ENV
-const accountSid = 'xxx';
-const authToken = 'xxx';
 
+// create a Twilio client
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-client.messages
-    .create({
-        body: 'Your shift starts in 1 hr! Enjoy',
-        from: '+18647749745',
-        to: '+13528710240'
-    })
-    .then(message => console.log(message.sid));
+async function sendScheduledSms() {
+  // schedule message to be sent 61 minutes after current time
+  const sendWhen = new Date(new Date().getTime() + 361 * 60000);
+
+  // send the SMS
+  const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+  const message = await client.messages.create({
+    from: messagingServiceSid,
+    to: '+13528710240',  // ← your phone number here
+    body: 'Testing Twilio scheduling messages BRUH!',
+    scheduleType: 'fixed',
+    sendAt: sendWhen.toISOString(),
+  });
+
+  console.log(message.sid);
+}
+
+sendScheduledSms();

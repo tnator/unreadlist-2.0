@@ -8,39 +8,6 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 // Passport handles adding password to schema and other goodies
 const passportLocalMongoose = require('passport-local-mongoose');
 
-// ME - uberUser
-// RADIOLOGIST - userRad
-    // accessLevel
-    // firstName
-    // lastName
-    // initials
-    // title - full, associate, employed, it, ceo, secretary
-    // emailPrimary
-    // emailSecondary
-    // primaryPhoneNum
-    // secondaryPhoneNum
-    // specialty
-    //     neuro
-    //     msk
-    //     ir
-    //     nucs
-    //     mammo
-    //     body
-    //     chest
-    // medical school
-    // internship
-    // residency
-    // fellowship
-
-// ADMINISTRATION - userAdmin
-    // accessLevel
-    // firstName
-    // lastName
-    // title
-    // email
-    // primaryPhoneNum
-    // secondaryPhoneNum
-
 const UserSchema = new Schema({
     clearance: { type: String },
     firstName: { type: String, trim: true, required: true },
@@ -49,10 +16,13 @@ const UserSchema = new Schema({
     title: { type: String },
     emailPrimary: { type: String, lowercase: true, required: true },
     emailSecondary: { type: String, lowercase: true },
+    emailTertiary: { type: String, lowercase: true },
     phonePrimary: { type: String, trim: true, required: true },
     phoneSecondary: { type: String, trim: true },
+    phoneTertiary: { type: String, trim: true },
     specialty: { type: String },
     degree: { type: String },
+    inception: { type: Date },
     medSchool: { type: String },
     internship: { type: String },
     residency: { type: String },
@@ -61,8 +31,6 @@ const UserSchema = new Schema({
     resetPasswordExpires: Date,
     created: { type: Date, default: Date.now }
 });
-
-
 
 // All of this below is for the avatar when logged in
 UserSchema.virtual('gravatar').get(function() {
@@ -102,3 +70,36 @@ module.exports = mongoose.model('User', UserSchema);
 //     ],
 //     created: { type: Date, default: Date.now }
 // });
+
+// ME - uberUser
+// RADIOLOGIST - userRad
+    // accessLevel
+    // firstName
+    // lastName
+    // initials
+    // title - full, associate, employed, it, ceo, secretary
+    // emailPrimary
+    // emailSecondary
+    // primaryPhoneNum
+    // secondaryPhoneNum
+    // specialty
+    //     neuro
+    //     msk
+    //     ir
+    //     nucs
+    //     mammo
+    //     body
+    //     chest
+    // medical school
+    // internship
+    // residency
+    // fellowship
+
+// ADMINISTRATION - userAdmin
+    // accessLevel
+    // firstName
+    // lastName
+    // title
+    // email
+    // primaryPhoneNum
+    // secondaryPhoneNum

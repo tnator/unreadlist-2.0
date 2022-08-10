@@ -1,70 +1,141 @@
-mixin vacationForm(vacationWeek = {})
+mixin vacationForm(week = {})
 
-    - if (vacationWeek.startDate && vacationWeek.endDate) {
-    -   var startDate = vacationWeek.startDate;
-    -   var offset = startDate.getTimezoneOffset() / 60;
-    -   var hours = startDate.getHours();
-    -   startDate.setHours(hours - offset);
-    -   startDate.setMinutes(00)
-    -   var isoStart = startDate.toISOString();
-    -   var start = isoStart.slice(0,-5);
-    -
-    -   var endDate = vacationWeek.endDate;
-    -   var offset = endDate.getTimezoneOffset() / 60;
-    -   var hours = endDate.getHours();
-    -   endDate.setHours(hours - offset);
-    -   var isoEnd = endDate.toISOString();
-    -   var end = isoEnd.slice(0,-5);
+    - if (week.startDate) {
+    -   var start = week.startDate.toISOString().substring(0,10);
+    - } else {
+    -   var startDate = new Date(2022, 6, 1)
+    -   var start = startDate.toISOString().substring(0,10);
     - }
-    - var dateStart = new Date();
-    - var offset = dateStart.getTimezoneOffset() / 60;
-    - dateStart.setFullYear(2023);
-    - dateStart.setHours(0 - offset);
-    - dateStart.setMinutes(01);
-    - var dateStart = dateStart.toISOString();
-    - var dateStart = dateStart.slice(0,-5);
-    - 
-    - var dateEnd = new Date();
-    - var offset2 = dateEnd.getTimezoneOffset() / 60;
-    - dateEnd.setFullYear(2023);
-    - dateEnd.setHours(23 - offset2);
-    - dateEnd.setMinutes(59);
-    - var dateEnd = dateEnd.toISOString();
-    - var dateEnd = dateEnd.slice(0,-5);
 
-    form.container.my-3.py-2(action=`/vacationEdit/${vacationWeek._id || ''}` method="POST" class="card")
+    - if (week.endDate) {
+    -   var end = week.endDate.toISOString().substring(0,10);
+    - } else {
+    -   var endDate = new Date(2022, 6, 9);
+    -   var end = endDate.toISOString().substring(0,10);
+    - }
+
+    form.container.my-3.py-2(action=`/vacationEdit/${week._id || ''}` method="POST")
         .form-floating.mb-3
-            input#weekNum.form-control(type="number" name="weekNum" placeHolder="weekNum" value=vacationWeek.weekNum)
-            label.form-label(for="weekNum") Week Number
+            //- Had to pull in maximum weekNum to populate next week to schedule in form
+            if vacation
+                each item in vacation
+                    input#weekNum.form-control(type="number" name="weekNum" placeHolder="weekNum" value= item.weekNum + 1)
+                label.form-label(for="weekNum") Week #
+            else 
+                input#weekNum.form-control(type="number" name="weekNum" placeHolder="weekNum" value= week.weekNum)
+                label.form-label(for="weekNum") Week #
 
 
         .form-floating.mb-3
-            input#startDate.form-control(type="datetime-local" onfocus="this.type='date'" name="startDate" placeHolder="startDate" value=start || dateStart)
+            input#startDate.form-control(type="date" onfocus="this.type='date'" name="startDate" placeHolder="startDate" value=start)
             label.form-label(for="startDate") Start Date
         .form-floating.mb-3
-            input#endDate.form-control(type="datetime-local" onfocus="this.type='date'" name="endDate" placeHolder="endDate" value=end || dateEnd)
+            input#endDate.form-control(type="date" onfocus="this.type='date'" name="endDate" placeHolder="endDate" value=end)
             label.form-label(for="endDate") End Date
-        
 
-        .input-group.mb-3 
+        .input-group.mb-3
             span#slotA.input-group-text Slot A
-            input.ps-2(type="text" name="slotA" placeHolder="open" maxlength="3" value=vacationWeek.slotA)
-        .input-group.mb-3 
+            select.form-select(id='slotA' name='slotA' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotA
+                    option(selected=week.slotA)= week.slotA.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN              
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
             span#slotB.input-group-text Slot B
-            input.ps-2(type="text" name="slotB" placeHolder="open" maxlength="3" value=vacationWeek.slotB)
-        .input-group.mb-3 
+            select.form-select(id='slotB' name='slotB' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotB
+                    option(selected=week.slotB)= week.slotB.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
             span#slotC.input-group-text Slot C
-            input.ps-2(type="text" name="slotC" placeHolder="open" maxlength="3" value=vacationWeek.slotC)
-        .input-group.mb-3 
+            select.form-select(id='slotC' name='slotC' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotC
+                    option(selected=week.slotC)= week.slotC.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
             span#slotD.input-group-text Slot D
-            input.ps-2(type="text" name="slotD" placeHolder="open" maxlength="3" value=vacationWeek.slotD)
-        .input-group.mb-3 
+            select.form-select(id='slotD' name='slotD' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotD
+                    option(selected=week.slotD)= week.slotD.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
             span#slotE.input-group-text Slot E
-            input.ps-2(type="text" name="slotE" placeHolder="open" maxlength="3" value=vacationWeek.slotE)
-        .input-group.mb-3 
+            select.form-select(id='slotE' name='slotE' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotE
+                    option(selected=week.slotE)= week.slotE.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
             span#slotF.input-group-text Slot F
-            input.ps-2(type="text" name="slotF" placeHolder="open" maxlength="3" value=vacationWeek.slotF)
+            select.form-select(id='slotF' name='slotF' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotF
+                    option(selected=week.slotF)= week.slotF.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
+            span#slotG.input-group-text Slot G
+            select.form-select(id='slotG' name='slotG' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotG
+                    option(selected=week.slotG)= week.slotG.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+        .input-group.mb-3
+            span#slotH.input-group-text Slot H
+            select.form-select(id='slotH' name='slotH' placeholder='enter INITIALS or OPEN' minlength="3" maxlength="4")
+                if week.slotH
+                    option(selected=week.slotH)= week.slotH.toUpperCase()
+                option(value='CLS') CLOSED
+                option(value='OPN') OPEN  
+                each user in users
+                    option(value=user.initials)= user.initials.toUpperCase()
+
         .form-floating.mb-3
-            input#notes.form-control(type="text" name="notes" placeHolder="notes" value=vacationWeek.notes)
+            input#notes.form-control(type="text" name="notes" placeHolder="notes" value=week.notes)
             label.form-label(for="notes") Notes
         input.btn.btn-warning(type="submit" value="Save Vacation" class="button")
+
+
+
+
+
+
+
+
+        //- .input-group.mb-3 
+        //-     span#slotB.input-group-text Slot B
+        //-     input.ps-2(type="text" name="slotB" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotB)
+        //- .input-group.mb-3 
+        //-     span#slotC.input-group-text Slot C
+        //-     input.ps-2(type="text" name="slotC" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotC)
+        //- .input-group.mb-3 
+        //-     span#slotD.input-group-text Slot D
+        //-     input.ps-2(type="text" name="slotD" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotD)
+        //- .input-group.mb-3 
+        //-     span#slotE.input-group-text Slot E
+        //-     input.ps-2(type="text" name="slotE" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotE)
+        //- .input-group.mb-3 
+        //-     span#slotF.input-group-text Slot F
+        //-     input.ps-2(type="text" name="slotF" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotF)
+        //- .input-group.mb-3 
+        //-     span#slotG.input-group-text Slot G
+        //-     input.ps-2(type="text" name="slotG" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotG)
+        //- .input-group.mb-3 
+        //-     span#slotH.input-group-text Slot H
+        //-     input.ps-2(type="text" name="slotH" placeHolder="enter INITIALS or OPEN" minlength="3" maxlength="4" value=week.slotH)

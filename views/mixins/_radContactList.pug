@@ -1,0 +1,57 @@
+mixin radContactList(rads = {})
+    //- each rad in rads 
+    //-     .rad-contact-container
+    //-         .row.rad-row
+    //-             .col-12.col-md-9.col-lg-8.col-xl-7.rad-info
+    //-                 .row.rad-name
+    //-                     h5.rad-name-degree= rad.firstName + ' ' + rad.lastName + ' ' + rad.degree
+    //-                     blockquote.rad-specialty= rad.specialty
+    //-                 .row.rad-connection
+    //-                     .col-3.rad-email-link.rounded-pill
+    //-                         a(href=`mailto: ${emailPrimary}`)
+    //-                             i.fa-solid.fa-envelope.font-icon-large.text-light
+    //-                     .col-3.rad-text-link.rounded-pill
+    //-                         a(href=`tel:1-${rad.phonePrimary}` class=`${contactText}`)
+    //-                             i.fa-solid.fa-comment.font-icon-large.text-light
+    //-                     .col-3.rad-phone-link.rounded-pill
+    //-                         a(href=`tel:1-${rad.phonePrimary}` class=`${contactText}`)
+    //-                             i.fa-solid.fa-phone.font-icon-large.text-light
+
+    //- each rad in rads 
+    //-     .site-container.site-container-rad
+    //-         .site-accordion.site-accordion-rad= rad.firstName + ' ' + rad.lastName + ' ' + rad.degree
+    //-         .container-fluid.panel
+    //-             .row.rad-specialty-row
+    //-                 subtitle.rad-specialty= rad.specialty
+    //-             .row.rad-connection
+    //-                 .col-3.rad-email-link.rounded-pill
+    //-                     a(href=`mailto: ${emailPrimary}`)
+    //-                         i.fa-solid.fa-envelope.font-icon-large.text-light
+    //-                 .col-3.rad-text-link.rounded-pill
+    //-                     a(href=`tel:1-${rad.phonePrimary}` class=`${contactText}`)
+    //-                         i.fa-solid.fa-comment.font-icon-large.text-light
+    //-                 .col-3.rad-phone-link.rounded-pill
+    //-                     a(href=`tel:1-${rad.phonePrimary}` class=`${contactText}`)
+    //-                         i.fa-solid.fa-phone.font-icon-large.text-light
+
+
+
+    //- each rad in rads 
+    //-     .rad-contact-container.border.border-rounded.bg-transparent
+    //-         .row.rad-row
+    //-             .col-3.rad-image
+    //-                 img.img-fluid.img-thumbnail(src=`/images/photos/profilePictures/${rad.firstName}${rad.lastName}.jpeg` alt="Profile Picture")
+    //-             .col-9.rad-info
+    //-                 .row.rad-name
+    //-                     h5= rad.firstName + ' ' + rad.lastName + ' ' + rad.degree
+    //-                     blockquote.rad-specialty= rad.specialty
+    //-                 .row.rad-connection
+    //-                     .col-3.rad-email-link.rounded-pill
+    //-                         a(href=`mailto: ${emailPrimary}`)
+    //-                             i.fa-solid.fa-envelope.font-icon-large.text-light
+    //-                     .col-3.rad-text-link.rounded-pill
+    //-                         a(href=`tel:1-${rad.phonePrimary}` class=`${contactText}`)
+    //-                             i.fa-solid.fa-phone.font-icon-large.text-light
+    //-                     .col-3.rad-phone-link.rounded-pill
+    //-                         a(href=`tel:1-${rad.phonePrimary}` class=`${contactText}`)
+    //-                             i.fa-solid.fa-phone.font-icon-large.text-light

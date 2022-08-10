@@ -1,0 +1,67 @@
+extends layout 
+
+block content 
+    .container-lg
+        row.my-3
+            h5 Stats 
+
+        table.my-3.table.table-striped.table-hover.text-center.border 
+            thead 
+                tr 
+                    th Date
+                    th ORMC 
+                    th ORMC IR
+                    th WMH 
+                    th AH 
+                    th AH IR
+                    th SR 
+                    th MIC 
+                    th TIC 
+                    th WIC 
+                    th AI 
+                    th 1p-9p
+                    th 2p-10p
+                    th 3p-11p
+                    th 4p-12a
+                    th 11p-7a
+            tbody
+                each stat in stats
+                    tr 
+
+                        //- JAVASCRIPT STARTDATE
+                        - const dateSaved = stat.date;
+                        - const dateISO = dateSaved.toISOString().replace('.000Z', '');
+                        - const dateFull = new Date(dateISO);
+                        - const year = dateFull.getFullYear();
+                        - const monthNum = dateFull.getMonth();
+                        - const month = monthNum + 1;
+                        - const date = dateFull.getDate();
+                        - const dateDisplay = month + '/' + date
+
+                        td= dateDisplay
+                        td= stat.ormc.rvu
+                        td= stat.ormcir.rvu 
+                        td= stat.wmh.rvu 
+                        td= stat.ah.rvu 
+                        td= stat.ahir.rvu 
+                        td= stat.sr.rvu 
+                        td= stat.mic.rvu 
+                        td= stat.tic.rvu 
+                        td= stat.wic.rvu 
+                        td= stat.ai.rvu 
+                        td= stat.oneNine.rvu
+                        td= stat.twoTen.rvu
+                        td= stat.threeEleven.rvu 
+                        td= stat.fourTwelve.rvu 
+                        td= stat.elevenSeven.rvu 
+                tr.table-warning
+                    td Avg
+                    each average in averageArray
+                        td= average.toFixed(0)
+                    //- - var sum = 0
+                    //- each stat in stats
+                    //-     - var num = stat.ormc.rvu
+                    //-     - var array = array.push(num)
+                        //- - var num += num
+                        //- td= array
+                        //- td= (stat.ormc.rvu++)/stats.length

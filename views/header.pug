@@ -1,67 +1,93 @@
-nav.navbar.navbar-expand-lg.navbar-light.p-0.gray-100.border-bottom
-  .container
-    a.navbar-brand(href='/')
-      .center
+//- MIXIN FOR NAV LINKS
+mixin navLinks
+  li.nav-li
+      a.primary-nav-link(href='/contacts') Contacts
+  li.nav-li
+      a.primary-nav-link(href='/vacation') Vacation
+  li.nav-li
+      a.primary-nav-link(href='/honeyBadger') Nighthawk
+  li.nav-li
+      a.primary-nav-link(href='/resources') Resources
+  if uberUser
+      //- DO NOT DELETE !!!!!!!!!
+      //- li
+      //-     a.primary-nav-link(href='/sites') Sites
+      //- li.bottom
+      //-     a.heart.p-2.text-danger(href="/hearts")
+      //-         i.fa-solid.fa-heart.fa-lg.mx-1
+      //-         span.heart-count #{user.hearts && user.hearts.length}
+      //- li 
+      //-     a.primary-nav-link(href='/register') Register
+      li.nav-li
+          a.primary-nav-link(href='/admin') Admin
+
+
+
+//- MIXIN FOR NAV LOGIN
+mixin navLog
+  if user
+    .dropdown
+      a(href="" class="dropdown-toggle" role="button" id="dropdownID" data-bs-toggle="dropdown" data-bs-display="static")
+        i.fa-duotone.fa-user-large.font-icon-color-user.fa-2xl
+      .dropdown-menu.dropdown-menu-lg-end(aria-labelledby="dropdownID")
+        .dropdown-header= 'Hello ' + user.firstName 
+        .dropdown-body 
+          a.dropdown-profile-link(href='/profileDisplay') My Profile
+          a.dropdown-logout-link(href='/logoutPassport') Log Out
+
+    //- .nav-profile-icon     
+    //-     a.user-icon(href='/profileDisplay')
+    //-         i.fa-duotone.fa-user-large.font-icon-color-user.fa-xl
+    //-     p.greeting.small= 'Hi ' + user.firstName + '!'
+    //- a.btn.button-logout(href='/logoutPassport') Log Out
+    //-     i.fa-solid.fa-right-to-bracket.ps-3
+  else 
+      - var date = new Date();
+      - var dateOptions = { month: 'numeric', day: 'numeric', year: 'numeric' };
+      - var date = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+      h6= date
+
+//- START OF MAIN CODE
+nav.navbar.navbar-expand-lg.navbar-dark
+  #nav-container.container
+    if user
+      a.navbar-brand(href='/indexMy')
         //- i.fas.fa-radiation-alt.fa-2x
         i.fa-duotone.fa-biohazard.font-icon-color-logo.fa-xl
-        #radase.m-0.px-3 Radase
+        .navbar-site-name Unread List
+          //- span#mobileTitle= title
+        .navbar-site-name-mobile UL
+          //- span#mobileTitle= title
+    else 
+      a.navbar-brand(href='/')
+        //- i.fas.fa-radiation-alt.fa-2x
+        i.fa-duotone.fa-biohazard.font-icon-color-logo.fa-xl
+        .navbar-site-name Unread List
           span#mobileTitle= title
-
-    button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='offcanvas', data-bs-target='#offcanvas', aria-controls='offcanvas-toggler')
-      span.navbar-toggler-icon.custom-toggler
-    //- START HORIZONTAL NAVBAR FOR LARGE SCREENS
-    navbar#navbarToggler.collapse.navbar-collapse.row
-      ul.col-10.nav.d-flex.flex-row
-        //- PULLS IN NAVLIST FROM SEPARATE FILE
-        include navLinks
-      include navLogin
-    //- START OFFCANVAS FOR SMALL SCREENS
-    #offcanvas.offcanvas.offcanvas-start
-      .offcanvas-header
-        h5.offcanvas-title Radase
-          //- i.fas.fa-radiation-alt.fa-2x.icon
-        button.btn-close.text-reset(type="button" data-bs-dismiss="offcanvas" aria-label="Close")
-      .offcanvas-body
-        ul.nav.d-flex.flex-column
+        .navbar-site-name-mobile UL
+          span#mobileTitle= title
+    if user
+      button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='offcanvas', data-bs-target='#offcanvas', aria-controls='offcanvas-toggler')
+        span.navbar-toggler-icon.custom-toggler
+      //- START HORIZONTAL NAVBAR FOR LARGE SCREENS
+      #navbarToggler.collapse.navbar-collapse.row.m-0
+        ul.col.navbar-nav.navbar-nav-horizontal
           //- PULLS IN NAVLIST FROM SEPARATE FILE
-          include navLinks
-        include navLogin
+          //- if user
+          +navLinks
+        .col.navbar-nav-login-horizontal
+          +navLog
 
 
-
-    //- button.navbar-toggler.custom-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarToggler', aria-controls='navbarToggler', aria-expanded='false', aria-label='Toggle navigation')
-    //-   span.navbar-toggler-icon.custom-toggler
-    //- #navbarToggler.collapse.navbar-collapse
-      ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        li.nav-item
-          a.nav-link(href='/') Home
-        li.nav-item
-          a.nav-link(href='/contacts') Contacts
-        li.nav-item
-          a.nav-link(href='/vacation') Vacation
-        li.nav-item
-          a.nav-link(href='/honeyBadger')
-            i.fa-duotone.fa-badger-honey.fa-lg
-        li.nav-item
-          a.nav-link(href='/resources') Resources
-        li.nav-item
-          a.nav-link(href='/sites') Sites
-
-        if user
-          a.heart.p-2.text-danger(href="/hearts")
-            i.fa-solid.fa-heart.fa-lg.mx-1
-            span.heart-count #{user.hearts && user.hearts.length}
-        
-        if uberUser
-          li.nav-item 
-            a.nav-link(href='/register') Register
-      if user
-        a.btn.btn-secondary.me-3(href='/logoutPassport') Log Out
-      else
-        a.btn.btn-secondary.me-3(href='/loginPassport') Log In
-      
-      if user
-        //- THIS BELOW IF FROM WES BOS COURSE
-        //- img.avatar(src=user.gravatar)
-        a(href='/profileDisplay')
-          i.fa-duotone.fa-user-large.fa-xl
+      //- START OFFCANVAS FOR SMALL SCREENS
+      #offcanvas.offcanvas.offcanvas-end
+        .offcanvas-header
+          //- .offcanvas-title Radase
+          button.btn-close.btn-close-white(type="button" data-bs-dismiss="offcanvas" aria-label="Close")
+        .offcanvas-body
+            //- if user
+            ul.navbar-nav.navbar-nav-vertical
+              //- PULLS IN NAVLIST FROM SEPARATE FILE
+              +navLinks
+            ul.navbar-nav.navbar-nav-login-vertical
+              +navLog

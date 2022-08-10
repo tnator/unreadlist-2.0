@@ -1,12 +1,14 @@
 //- NAV LOGIN TEMPLATE
-.col.d-flex.flex-row.center.p-0
-    if user
-        a.pe-3(href='/profileDisplay')
-            i.fa-duotone.fa-user-large.font-icon-color-user.fa-xl
-        a.w-75.btn.btn-secondary(href='/logoutPassport') Log Out
-    else
-        a.w-75.btn.btn-secondary(href='/loginPassport') Log In
 
-//- if user
-    //- THIS BELOW IF FROM WES BOS COURSE
-    //- img.avatar(src=user.gravatar)
+if user
+    .nav-profile-icon     
+        a.user-icon(href='/profileDisplay')
+            i.fa-duotone.fa-user-large.font-icon-color-user.fa-xl
+        p.greeting.small= 'Hi ' + user.firstName + '!'
+    a.btn.button-logout(href='/logoutPassport') Log Out
+        i.fa-solid.fa-right-to-bracket.ps-3
+else 
+    - var date = new Date();
+    - var dateOptions = { month: 'numeric', day: 'numeric', year: 'numeric' };
+    - var date = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+    h6= date

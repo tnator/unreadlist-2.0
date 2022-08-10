@@ -1,30 +1,52 @@
 extends layout 
 
 include mixins/_contactCard
+include mixins/_radContactList
 
-block content 
-    .container-fluid.zero
-        .row.w-100.h-100.zero
+block content
+    if uberUser
+        a.form-button(href='/contactAdd') Add Contact
+    .container
+        //- .row.search-container
+        //-     nav.mt-3.px-4.w-100.bg-transparent
+        //-         form.search
+        //-             input.form-control.search-input(type="text" placeholder="Search... (kinda works)" name="contactSearch")
+        //-             .search__results.bg-transparent
+        .row.contact-container
             //- .col-md-1.column.bg-tomato.bg-gradient
             //-     .columnTitle Contacts
-            .col-md.contact-container-left
+
+            //- .col-md.contact-container-left
                 //- .row.my-4.w-100
                 //-     input(type='search' oninput="liveSearch()" placeholder="Search contacts..." name='searchbox')
                 //-     .is-hidden
-                nav.my-4.w-100
-                    form.search
-                        input.form-control.search-input(type="text" placeholder="Search... (kinda works)" name="contactSearch")
-                        .search__results
-                .row.py-5
-                    h3 On Call #'s
+                //- .row.py-5
+                //-     h3 On Call #'s
+            .col-12.col-md-6.col-xl-4.contact-column
+                each hospitalSite in hospitalArray
+                    .site-container.site-container-hospital(class= hospitalSite[1].toLowerCase())
+                        .site-accordion.text-truncate.site-accordion-hospital(class= hospitalSite[1].toLowerCase())= hospitalSite[0]
+                        .container-fluid.panel
+                            each contact in contacts 
+                                if contact.acronym === hospitalSite[1]
+                                    +contactCard(contact)
+            .col-12.col-md-6.col-xl-4.contact-column
+                each erClinicSite in erClinicArray
+                    .site-container.site-container-erClinic(class= erClinicSite[1].toLowerCase())
+                        .site-accordion.site-accordion-erClinic(class= erClinicSite[1].toLowerCase())= erClinicSite[0]
+                        .container-fluid.panel
+                            each contact in contacts 
+                                if contact.acronym === erClinicSite[1]
+                                    +contactCard(contact)
                     
-            .col-12.col-md-6.col-lg-5.col-xl-4.contact-container-right
-                #contacts
-                    each site in siteArray
-                        .site-container
-                            .site-accordion= site[0]
-                            .container-fluid.panel
-                                each contact in contacts 
-                                    if contact.acronym === site[1]
-                                        +contactCard(contact)
-            
+            .col-12.col-md-6.col-xl-4.contact-column
+                each site in outpatientArray
+                    .site-container.site-container-outpatient(class= site[1].toLowerCase())
+                        .site-accordion.site-accordion-outpatient(class= site[1].toLowerCase())= site[0]
+                        .container-fluid.panel
+                            each contact in contacts 
+                                if contact.acronym === site[1]
+                                    +contactCard(contact)
+        //- .row 
+        //-     h3.text-center Radiologists & PAs
+        //-     +radContactList(rads)

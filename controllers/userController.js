@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { OutgoingCallerIdContext } = require('twilio/lib/rest/api/v2010/account/outgoingCallerId');
 const { findOne } = require('../models/userPassportModel');
 const User = mongoose.model('User');
 const Vacation = mongoose.model('Vacation');
@@ -40,14 +41,31 @@ exports.validateRegister = (req, res, next) => {
     };
     next();
 };
+
+
+
 exports.register = async (req, res, next) => {
     // const user = new User({ name: req.body.name, email: req.body.email });
+    // Following code takes input phone number with dashes and 
+    // converts to +13525555555 format before registering
+    var iCode = '+1';
+    var phoneStringPrimary = req.body.phonePrimary;
+    if (phoneStringPrimary.includes('-')) {
+        var phoneNoDashPrimary = phoneStringPrimary.replace(/-/g, '');
+    } else {
+        var phoneNoDashPrimary = phoneStringPrimary;
+    };
+    if (phoneStringPrimary.includes(iCode)) {
+        var phonePrimary = phoneNoDashPrimary;
+    } else {
+        var phonePrimary = iCode.concat(phoneNoDashPrimary);
+    };
     const user = new User({ 
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         initials: req.body.initials,
         emailPrimary: req.body.emailPrimary,
-        phonePrimary: req.body.phonePrimary
+        phonePrimary: phonePrimary,
     });
 
     // await user.setPassword('password');
@@ -59,27 +77,55 @@ exports.register = async (req, res, next) => {
     // const register = promisify(User.register, User);
     // const register = (User.register, User);
     await User.register(user, req.body.password);
-    next(); // pass to authcontroller.login
+    res.redirect('admin');
+    // next(); // pass to authcontroller.login
 };
 
 exports.profileDisplay = async (req, res) => {
     const profile = req.user
-    const honeyBadger = await HoneyBadger.find({ assigned: profile.initials });
-    const vacationWeeks = await Vacation.find({ $or: [
+    const shiftsUser = await HoneyBadger.find({ assigned: profile.initials });
+    const vacationUser = await Vacation.find({ $or: [
         {slotA: profile.initials},
         {slotB: profile.initials},
         {slotC: profile.initials},
         {slotD: profile.initials},
         {slotE: profile.initials},
         {slotF: profile.initials},
-    ]});
-    res.render('profileDisplay', { title: 'My Profile', profile, honeyBadger, vacationWeeks });
+        {slotG: profile.initials},
+        {slotH: profile.initials},
+    ] });
+    res.render('profileDisplay', { title: 'My Profile', profile, shiftsUser, vacationUser });
 };
 exports.profileEdit = async (req, res) => {
     const profile = await User.findOne({ _id: req.params.id });
     res.render('profileEdit', { title: 'Edit My Profile', profile });
 };
 exports.profileUpdate = async (req, res) => {
+    var iCode = '+1';
+    var phoneStringPrimary = req.body.phonePrimary;
+    if (phoneStringPrimary.includes('-')) {
+        var phoneNoDashPrimary = phoneStringPrimary.replace(/-/g, '');
+    } else {
+        var phoneNoDashPrimary = phoneStringPrimary;
+    };
+    if (phoneStringPrimary.includes(iCode)) {
+        var phonePrimary = phoneNoDashPrimary;
+    } else {
+        var phonePrimary = iCode.concat(phoneNoDashPrimary);
+    };
+
+    var phoneStringSecondary = req.body.phoneSecondary;
+    if (phoneStringSecondary.includes('-')) {
+        var phoneNoDashSecondary = phoneStringSecondary.replace(/-/g, '');
+    } else {
+        var phoneNoDashSecondary = phoneStringSecondary;
+    };
+    if (phoneStringSecondary.includes(iCode)) {
+        var phoneSecondary = phoneNoDashSecondary;
+    } else {
+        var phoneSecondary = iCode.concat(phoneNoDashSecondary);
+    };
+
     const updates = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -89,11 +135,12 @@ exports.profileUpdate = async (req, res) => {
         clearance: req.body.clearance,
         emailPrimary: req.body.emailPrimary,
         emailSecondary: req.body.emailSecondary,
-        phonePrimary: req.body.phonePrimary,
-        phoneSecondary: req.body.phoneSecondary,
+        phonePrimary: phonePrimary,
+        phoneSecondary: phoneSecondary,
         specialty: req.body.specialty,
         medSchool: req.body.medSchool,
         degree: req.body.degree,
+        inception: req.body.inception,
         internship: req.body.internship,
         residency: req.body.residency,
         fellowship: req.body.fellowship,
@@ -109,4 +156,14 @@ exports.profileUpdate = async (req, res) => {
 
     // This sends person back
     // res.redirect('back');
+};
+
+
+//  !!!!!!!!!!!!! NEED TO FIGURE OUT -- KEEP DELETING MY PROFILE !!!!!!!!!!
+exports.profileDelete = async (req, res) => {
+    console.log(req.params.id);
+    // const profile = await User.deleteOne({ _id: req.params.id });
+    // req.flash('success', `You deleted ${req.params.id}`)
+    // const profile = await User.findOneAndDelete({ _id: id }, req.body ).exec();
+    res.redirect('/admin');
 };

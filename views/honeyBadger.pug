@@ -1,52 +1,83 @@
 extends layout 
 
-block content 
-    .container-fluid.m-0.p-0
-        //- .row.m-0.p-2.bg-primary.bg-gradient
-        //-     .center
-        //-         i.fa-light.fa-badger-honey.fs-4.text-light.pe-3
-        //-         h5.text-light.me-3= title
-        //-         //- ONLY VISIBLE IF LOGGED IN AND ADMIN
-        //-         if uberUser
-        //-             a.add(href='/honeyBadgerAdd')
-        //-                 i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
-        //- CREATE HONEY BADGERS SCHEDULE BELOW HERE
-        //- .row
-        table.table.table-striped.table-hover.text-center
-            thead
-                tr
-                    th.shiftDate(scope="col") Date 
-                    th.startTime(scope="col") Start
-                    th.endTime(scope="col") End
-                    th.shiftDuration(scope="col") Duration
-                    th.payer(scope="col") Payer
-                    th.rate(scope="col") Rate
-                    th.fee(scope="col") Fee
-                    th.assigned(scope="col") Assigned
-                    if uberUser
-                        th(scope="col") Delete
-            tbody
-                each shift in shifts
-                    tr.shiftrow(class=shift.assigned.toLowerCase())
-                        - var dateOptions = { month: 'numeric', day: 'numeric' };
-                        - var timeOptions = { hour: 'numeric', minute: 'numeric' };
-                        - var shiftDate = new Intl.DateTimeFormat('en-US', dateOptions).format(shift.startTime);
-                        - var startTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.startTime);
-                        - var endTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.endTime);
-                        
-                        if uberUser 
-                            th.shiftDate(scope="row")
-                                a(href=`/honeyBadger/${shift._id}/edit`)= shiftDate
-                        else
-                            th(scope="row")= shiftDate
-                        td.startTime= startTime
-                        td.endTime= endTime
-                        td.shiftDuration= shift.shiftDuration + ' hr(s)'
-                        td.payer= shift.payer
-                        td.rate= '$ ' + shift.rate
-                        td.fee= '$ ' + shift.fee
-                        td.assigned= shift.assigned
-                        if uberUser 
-                            td.edit 
-                                a(href=`/honeyBadger/${shift._id}/delete`)
-                                    i.bi.bi-x-square
+include mixins/_honeyBadgerUser
+
+block content
+    .container-lg.table-main-container
+        .table-title-container
+            .row
+                if uberUser
+                    .col-3.table-title-column
+                        a(href='/honeyBadgerAdd')
+                            i.fa-regular.fa-plus.2xl.text-success
+                .col-6.table-title-column.table-title-display= title
+                .col.table-title-column
+                    .form-check.form-switch.p-0.m-0(class='toggle' data-bs-toggle='collapse' data-bs-target='#collapseRowNighthawk' role='button')
+                        input.form-check-input.form-check-input-bg.form-check-input-checked-bg-color.m-0.p-0(type="checkbox" id="switchCheck")
+                        label.form-check-label(for="switchCheck")
+
+        .table-container
+            table.table
+                caption Nighthawk Shifts
+                thead
+                    tr
+                        th.text-shrink.shift-date-head(scope="col") Date
+                        th.text-shrink.shift-time-head(scope="col") Start
+                        th.text-shrink.shift-time-head(scope="col") End
+                        th.text-shrink.shift-time-head.mobile-hide(scope="col") Duration
+                        if uberUser || radUser
+                            th.text-shrink.shift-money-head.mobile-hide(scope="col") Payer
+                            th.text-shrink.shift-money-head.mobile-hide(scope="col") Rate
+                            th.text-shrink.shift-money-head.mobile-hide(scope="col") Fee
+                        th.text-shrink.shift-assigned-head(scope="col") Rad
+                        if uberUser
+                            th.text-shrink.shift-delete-head(scope="col") Delete
+                tbody
+                    each shift in shifts
+                        - const dateOptions = { month: 'numeric', day: 'numeric' };
+                        - const timeOptions = { hour: 'numeric', minute: 'numeric' };
+                        - const shiftDate = new Intl.DateTimeFormat('en-US', dateOptions).format(shift.startTime);
+                        - const startTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.startTime);
+                        - const endTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.endTime);
+                        - const currentDate = new Date();
+
+                        //- MIXIN FOR FILLING IN NIGHTHAWK ROWS
+                        mixin nighthawkRow 
+                            if uberUser 
+                                th.text-shrink.shift-date-future(scope="row")
+                                    a.shift-date.shift-date-future(href=`/honeyBadger/${shift._id}/edit`)= shiftDate
+                            else
+                                th.text-shrink.shift-date-future(scope="row")= shiftDate
+                            
+                            td.text-shrink.shift-time= startTime
+                            td.text-shrink.shift-time= endTime
+                            td.text-shrink.shift-time.mobile-hide= shift.shiftDuration + ' hr(s)'
+                            if uberUser || radUser
+                                td.text-shrink.shift-money.mobile-hide= shift.payer
+                                td.text-shrink.shift-money.mobile-hide= '$ ' + shift.rate
+                                td.text-shrink.shift-money.mobile-hide= '$ ' + shift.fee
+                            if profile.initials === shift.assigned
+                                td.text-shrink.shift-assigned-mine(class=shift.assigned.toLowerCase())= shift.assigned
+                            else if shift.assigned === 'OPEN'
+                                td.text-shrink.open= shift.assigned
+                            else
+                                td.text-shrink.shift-assigned(class=shift.assigned.toLowerCase())= shift.assigned
+                            if uberUser 
+                                td.text-shrink.edit 
+                                    a.shift-delete(href=`/honeyBadger/${shift._id}/delete`)
+                                        i.bi.bi-x-square
+
+                        //- PAST SHIFTS
+                        if shift.endTime < currentDate 
+                            tr.table-row.collapse#collapseRowNighthawk(class=shift.assigned.toLowerCase())
+                                +nighthawkRow
+                        //- ACTIVE SHIFT
+                        else if currentDate >= shift.startTime && currentDate <= shift.endTime
+                            tr.table-row.active-row(class=shift.assigned.toLowerCase())
+                                +nighthawkRow
+                        //- FUTURE SHIFTS
+                        else 
+                            tr.table-row(class=shift.assigned.toLowerCase())
+                                +nighthawkRow
+        if user && shiftsUser.length > 0
+            +honeyBadgerUser

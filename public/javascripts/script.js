@@ -1,6 +1,17 @@
-// const { sitesDisplay } = require("../../controllers/controller");
 
-// JAVASCRIPT TO UNDERLING NAV LINK FOR CURRENT PAGE
+// ENABLE BOOTSTRAP TOOLTIPS
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+// ENABLE BOOTSTRAP POPOVERS
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
+
+// JAVASCRIPT TO UNDERLINE NAV LINK FOR CURRENT PAGE
 const links = document.querySelectorAll('a.primary-nav-link');
 var current = 0;
 for (let i=0; i<links.length; i++) {
@@ -10,30 +21,39 @@ for (let i=0; i<links.length; i++) {
 };
 
 // SET EMPTY VACATION SLOT BACKGROUND TO DARK
-const slots = document.querySelectorAll("td.slot");
-for (let i=0; i<slots.length; i++) {
-    cell = slots[i].innerHTML;
-    if (cell === 'BLK') {
-        slots[i].style.backgroundColor = '#272727';
-        slots[i].style.color = '#272727';
-    } 
-    // else if (cell === '') {
-    //     slots[i].style.backgroundColor = 'transparent';
-    //     slots[i].style.color = '#F6F7F8';
-    // };
-};
+// const slots = document.querySelectorAll("td.vacation-slot");
+// const mine = document.querySelector('.mine');
+// for (let i=0; i<slots.length; i++) {
+//     cell = slots[i].innerHTML;
+//     if (cell === 'CLSD') {
+//         slots[i].style.backgroundColor = '#414141';
+//         slots[i].style.color = '#212121';
+//     } else if (cell === 'OPEN') {
+//         slots[i].style.backgroundColor = '#A5D6A7';
+//         slots[i].style.color = '#121212';
+//     };
+
+//     if (mine.classList.contains(cell.toLowerCase())) {
+//         slots[i].style.color = '#E57373';
+//     };
+// };
 
 // TOGGLE ALL VACATION WEEKS BACKGROUND COLOR FOR GIVEN RAD
-for (let i=0; i<slots.length; i++) {
-    slots[i].addEventListener('click', ()=> {
-        const classInitials = slots[i].innerHTML.toLowerCase();
-        var initialsList = document.querySelectorAll("." + classInitials);
-        for (let k=0; k<initialsList.length; k++) {
-            initialsList[k].classList.toggle('bg-danger');
-            initialsList[k].classList.toggle('text-light');
-        };
-    })
-}
+// for (let i=0; i<slots.length; i++) {
+//     slots[i].addEventListener('click', ()=> {
+//         const classInitials = slots[i].innerHTML.toLowerCase();
+//         var initialsList = document.querySelectorAll("." + classInitials);
+//         for (let k=0; k<initialsList.length; k++) {
+//             // initialsList[k].classList.toggle('bg-danger');
+//             initialsList[k].classList.toggle('vacation-toggle');
+//             // initialsList[k].classList.toggle('text-light');
+//             // initialsList[k].classList.toggle('text-light');
+//         };
+//     })
+// }
+
+
+
 // const totalRadsArray = ['jla', 'dma', 'era', 'aca', 'rrb', 'kib', 'jdb', 'aqc', 'jmc', 'bpc', 'egc', 'cmc', 'spd', 'cff', 'cmg', 'laj', 'vbk', 'dcm', 'rmm', 'rep', 'kbr', 'crr', 'jss', 'rjs', 'rkt', 'cva', 'mew'];
 // const totalRadsNum = totalRadsArray.length;
 // const nightRadsArray = ['cmc', 'vbk', 'cva'];
@@ -51,6 +71,16 @@ for (let i=0; i<slots.length; i++) {
 //     totalsContainer.appendChild(node);
 // };
 
+const arrayList = document.querySelectorAll('td.vacation-slot');
+Array.from(arrayList).forEach(function(el) {
+    console.log(el[1]);
+})
+
+
+
+
+
+
 
 // SCRIPT FOR CONTACTS PAGE ACCORDION TOGGLE
 var accordion = document.querySelectorAll(".site-accordion");
@@ -67,18 +97,31 @@ for (i=0; i<accordion.length; i++) {
     });
 }
 
-// TOGGLE ALL HONEY BADGER SHIFTS BACKGROUND COLOR FOR GIVEN RAD
-const assigned = document.querySelectorAll("td.assigned");
-for (let i=0; i<assigned.length; i++) {
-    assigned[i].addEventListener('click', ()=> {
-        const classInitials = assigned[i].innerHTML.toLowerCase();
-        var initialsList = document.querySelectorAll("." + classInitials);
-        for (let k=0; k<initialsList.length; k++) {
-            initialsList[k].classList.toggle('bg-danger');
-            initialsList[k].classList.toggle('text-light');
-        };
-    })
+// Pulled current user initials from profile page
+var currentUser = document.querySelector('.current-user').innerHTML;
+console.log(currentUser)
+const slots = document.querySelectorAll('td.vacation-slot');
+for (let i=0; i<slots.length; i++) {
+    console.log(slots[i]);
+    if (slots[i].innerHTML === currentUser) {
+        // color = primary-300
+        slots[i].style.color = '#E57373';
+        slots[i].style.backgroundColor = '#303030'
+    }
 }
+
+// TOGGLE ALL HONEY BADGER SHIFTS BACKGROUND COLOR FOR GIVEN RAD
+// const assigned = document.querySelectorAll("td.assigned");
+// for (let i=0; i<assigned.length; i++) {
+//     assigned[i].addEventListener('click', ()=> {
+//         const classInitials = assigned[i].innerHTML.toLowerCase();
+//         var initialsList = document.querySelectorAll("." + classInitials);
+//         for (let k=0; k<initialsList.length; k++) {
+//             initialsList[k].classList.toggle('bg-danger');
+//             initialsList[k].classList.toggle('text-light');
+//         };
+//     })
+// }
 
 const totals = document.querySelector(".totals");
 const shiftrows = document.querySelectorAll("tr.shiftrow");
@@ -118,21 +161,54 @@ function formatPhoneNumber(value) {
 
 //   SEARCH BAR FOR CONTACTS
 function liveSearch() {
-// Locate the card elements
-let contact = document.querySelectorAll('.panel-contact')
-// Locate the search input
-let search_query = document.getElementById("searchbox").value;
-// Loop through the cards
-for (var i = 0; i < contact.length; i++) {
-    // If the text is within the card...
-    if(contact[i].innerText.toLowerCase()
-    // ...and the text matches the search query...
-    .includes(search_query.toLowerCase())) {
-        // ...remove the `.is-hidden` class.
-        contact[i].classList.remove("is-hidden");
-    } else {
-    // Otherwise, add the class.
-    contact[i].classList.add("is-hidden");
+    // Locate the card elements
+    let contact = document.querySelectorAll('.panel-contact')
+    // Locate the search input
+    let search_query = document.getElementById("searchbox").value;
+    // Loop through the cards
+    for (var i = 0; i < contact.length; i++) {
+        // If the text is within the card...
+        if(contact[i].innerText.toLowerCase()
+        // ...and the text matches the search query...
+        .includes(search_query.toLowerCase())) {
+            // ...remove the `.is-hidden` class.
+            contact[i].classList.remove("is-hidden");
+        } else {
+        // Otherwise, add the class.
+        contact[i].classList.add("is-hidden");
+        }
     }
 }
-}
+
+// var currentDate = new Date();
+// var currentDate = currentDate.toISOString().replace('.000Z', '');
+// const weeks = document.querySelectorAll('tr.vacationWeek');
+// const el = document.querySelectorAll('td.startVacation');
+// for (let i=0; i<weeks.length; i++) {
+//     var startDate = weeks[i].getAttribute('data-startDate');
+//     var startDate = new Date(startDate);
+//     var endDate = weeks[i].getAttribute('data-endDate');
+//     var endDate = new Date(endDate);
+//     if ( currentDate > startDate && currentDate < endDate ) {
+//         for (let k=0; k<el.length; k++) {
+//             el[k].classList.add('bg-danger');
+//         }
+//     }
+//     console.log(startDate);
+//     console.log(currentDate);
+//     console.log(endDate);
+
+    // if (currentDate > startDate){
+    //     var result = 'in the past'
+    //     for (let k=0; k<el.length; k++) {
+    //         el[k].classList.add('bg-danger');
+    //     }
+    // } else if (currentDate < startDate) {
+    //     var result = 'in the future'
+    // } else {
+    //     var result = 'same date'
+    // }
+    // const start = weeks[i].dataset.startDate;
+    
+    // console.log(result);
+// };

@@ -1,0 +1,46 @@
+extends layout 
+
+include mixins/_quoteCard
+include mixins/_loginPassportForm
+
+block content
+    section.container-fluid.index-container
+        if !user
+            +loginPassportForm()
+        if user
+            .row.index-main-container
+                h3.index-header Welcome to Unread List v2.0!
+                .col-lg-6.mx-auto.p-4
+                    p.index-body-text Updated database-driven website providing rapid access to contacts, nighthawk/locums schedule, vacation schedule, and certain other resources. Feel free to <span><a data-bs-toggle="tooltip" data-bs-placement="top" title="rtompkins21@icloud.com" class='link-profile' href="mailto:rtompkins21@icloud.com">email</a></span> with suggestions or issues. Note...this is NOT a professionally-made website!
+            //- .row.w-100.d-flex.flex-md-row.justify-content-center
+            //-     .col-12.col-sm-10.col-md-4.my-3.index-contacts.d-flex.flex-column
+            //-         h6.text-danger.text-center QUICK CONTACTS 
+            //-         each contact in contacts
+            //-             a(type='button' href=`tel:${contact.phoneNum}`).btn.btn-danger.m-2= contact.numLabel
+            //-     if shifts.startTime
+            //-         .col-12.col-sm-10.col-md-4.my-3.index-nighthawk.d-flex.flex-column
+            //-             h6.text-success.text-center my NH/LOCUMS
+            //-                 span.ms-2.badge.bg-secondary= shifts.length
+            //-             each shift in shifts 
+            //-                 - var dateOptions = { month: 'numeric', day: 'numeric' };
+            //-                 - var timeOptions = { hour: 'numeric', minute: 'numeric' };
+            //-                 - var shiftDate = new Intl.DateTimeFormat('en-US', dateOptions).format(shift.startTime);
+            //-                 - var startTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.startTime);
+            //-                 - var endTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.endTime);
+            //-                 button(type='button').btn.btn-dark.m-2= shiftDate + ' - ' + startTime + ' to ' + endTime
+            //-     .col-12.col-sm-10.col-md-4.my-3.index-vacation.d-flex.flex-column
+            //-         h6.text-warning.text-center my VACATION
+            //-             span.ms-2.badge.bg-secondary= myVacation.length
+            //-         each vacation in myVacation
+            //-             - var dateOptions = { month: 'numeric', day: 'numeric' };
+            //-             - var vacationStart = new Intl.DateTimeFormat('en-US', dateOptions).format(vacation.startDate);
+            //-             - var vacationEnd = new Intl.DateTimeFormat('en-US', dateOptions).format(vacation.endDate);
+            //-             button(type='button').btn.btn-dark.m-2= 'Week ' + vacation.weekNum + ' - ' + vacationStart + ' to ' + vacationEnd
+                            
+                        
+                        //- p.text-light= 'Week ' + vacation.weekNum + ' - ' + vacationStart + ' to ' + vacationEnd
+                                
+    section.row.index-quote-container
+            .container
+                +quoteCard(quotes)
+    

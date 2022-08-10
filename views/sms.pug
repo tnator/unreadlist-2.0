@@ -1,9 +1,23 @@
 extends layout 
 
 block content 
-    .container-fluid 
-        form(action="/sms" method="POST")
-            .mb-4
-                label.form-label(for="sms") Send message
-                input.form-control(type="text" name="sms" placeholder="Enter message...")
-            input.btn.btn-success(type="submit" value="Send message")
+    //- .container-fluid 
+    //-     form(action="/sms" method="POST")
+    //-         .mb-4
+    //-             label.form-label(for="sms") Send message
+    //-             input.form-control(type="text" name="sms" placeholder="Enter message...")
+    //-         input.btn.btn-success(type="submit" value="Send message")
+    form.container.py-2(action='/sms' method='POST')
+        .form-floating.mb-3
+            input.form-control(type='text' name='message' placeholder='message')
+            label.form-label(for='message') Create message
+        //- .form-floating.mb-3
+        //-     input.form-control(type='sendWhen' name='sendWhen' placeholder='sendWhen')
+        //-     label.form-label(for='sendWhen') Send when
+        .input-group.mb-3
+            span.input-group-text Send to
+            select.form-select(id='initials' name='initials' placeholder='INITIALS | OPEN' minlength="3" maxlength="4")            
+                each user in users
+                    //- option(value=user.initials)= user.initials.toUpperCase()
+                    option(value=user.initials)= user.initials.toUpperCase()
+        input.btn.btn-warning(type="submit" value="Send Message ->" class="button")

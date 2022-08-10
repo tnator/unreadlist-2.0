@@ -1,12 +1,14 @@
 mixin loginPassportForm()
-
-    form.container.py-2(action="/loginPassport" method="POST")
-        .mb-1
-            h5.mb-0.text-dark= title
-        .mb-3
-            label.form-label(for="emailPrimary")
-            input.form-control(type="emailPrimary" name="emailPrimary" placeholder="Enter Email...")
-        .mb-3
-            label.form-label(for="password")
-            input.form-control(type="password" name="password" placeholder="Enter password...")
-        input.form-input.btn.btn-dark(type="submit" value="Log In ->")
+    .login-container
+        form.container(action="/loginPassport" method="POST")
+            h3.login-form-title.index-header Please log in!
+                //- i.fa-solid.fa-location-crosshairs.ps-3
+            .mb-3
+                label.form-label(for="emailPrimary")
+                input.form-control(type="emailPrimary" name="emailPrimary" placeholder="Enter Email...")
+            .mb-4
+                label.form-label(for="password")
+                input.form-control(type="password" name="password" placeholder="Enter password...")
+            //- input.form-input.btn.btn-dark(type="submit" value="LOG IN")
+            button.login-button(type="submit" value="Log In") Log In
+                    i.fa-solid.fa-right-to-bracket.ps-3

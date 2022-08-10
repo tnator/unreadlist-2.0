@@ -1,112 +1,82 @@
 extends layout 
 
 include mixins/_vacationDisplay
+include mixins/_vacationUser
 
 block content
+    .container-lg.table-main-container
+        .table-title-container 
+            .row 
+                if uberUser 
+                    .col-3.table-title-column 
+                        a(href='/vacationAdd')
+                            i.fa-regular.fa-plus.2xl.text-success
+                .col-6.table-title-column.table-title-display= title 
+                .col.table-title-column 
+                    .form-check.form-switch.p-0.m-0(class='toggle' data-bs-toggle='collapse' data-bs-target='#collapseRowVacation' role='button')
+                        input.form-check-input.form-check-input-bg.form-check-input-checked-bg-color.m-0.p-0(type="checkbox" id="switchCheck")
+                        label.form-check-label(for="switchCheck")
+        .table-container
+            table.table
+                thead
+                    tr
+                        th.text-shrink.vacation-week-head(scope="col") # 
+                        th.text-shrink.vacation-date-head(scope="col")
+                            i.bi.bi-arrow-bar-right
+                        th.text-shrink.vacation-date-head.mobile-hide(scope="col")
+                            i.bi.bi-arrow-bar-left
+                        th.text-shrink.vacation-slot-head.slotA(scope="col") A
+                        th.text-shrink.vacation-slot-head.slotB(scope="col") B
+                        th.text-shrink.vacation-slot-head.slotC(scope="col") C
+                        th.text-shrink.vacation-slot-head.slotD(scope="col") D
+                        th.text-shrink.vacation-slot-head.slotE(scope="col") E
+                        th.text-shrink.vacation-slot-head.slotF(scope="col") F
+                        th.text-shrink.vacation-slot-head.slotG(scope="col") G
+                        th.text-shrink.vacation-slot-head.slotH(scope="col") H
+                        if uberUser
+                            th.text-shrink.vacation-notes-head.mobile-hide(scope="col") Notes
+                            th.text-shrink.vacation-delete-head.mobile-hide(scope="col") X
+                tbody
+                    each week in vacation 
+                        +vacationDisplay(week)
 
-    .container-lg
-        //- .row.m-0.p-2.bg-primary.bg-gradient
-        //-     .center
-        //-         i.fa-light.fa-earth-americas.fs-4.text-light.pe-3
-        //-         h5.text-light.me-3= title
-        //-         //- ONLY VISIBLE IF LOGGED IN AND ADMIN
-        //-         if uberUser
-        //-             a.add(href='/vacationAdd')
-        //-                 i(style="font-size: 1.5rem;").bi.bi-plus-square.text-light
-        table.my-3.table.table-striped.table-hover.text-center.border
-            thead
-                tr
-                    th.vacationWeek.table-info(scope="col") # 
-                    th.startVacation.table-primary(scope="col")
-                        i.bi.bi-arrow-bar-right
-                    th.endVacation.table-primary(scope="col")
-                        i.bi.bi-arrow-bar-left
-                    th.slotA(scope="col") A
-                    th.slotB(scope="col") B
-                    th.slotC(scope="col") C
-                    th.slotD(scope="col") D
-                    th.slotE(scope="col") E
-                    th.slotF(scope="col") F
-                    if uberUser
-                        th.table-primary(scope="col") Notes
-                        th.delete.table-light.text-danger(scope="col") X
-            tbody
-                each vacationItem in vacation 
-                    +vacationDisplay(vacationItem)
-        .row.my-4
-            h5 Holidays
-        if generalUser
-            .row#myVacation
-                h5 My Vacation Weeks
-                ul
-                each week in myVacation
+                h5.hidden.current-user= profile.initials
+        //- INSERT MY VACATION MIXIN
+        +vacationUser()
 
-                    //- JAVASCRIPT STARTDATE
-                    - const startDateSaved = week.startDate;
-                    - const startDateISO = startDateSaved.toISOString().replace('.000Z', '');
-                    - const startDateFull = new Date(startDateISO);
-                    - const startYear = startDateFull.getFullYear();
-                    - const startMonthNum = startDateFull.getMonth();
-                    - const startDate = startDateFull.getDate();
-                    - if (startMonthNum === 0) {
-                    -     startMonth = "1";
-                    - } else if (startMonthNum === 1) {
-                    -     startMonth = "2";
-                    - } else if (startMonthNum === 2) {
-                    -     startMonth = "3";
-                    - } else if (startMonthNum === 3) {
-                    -     startMonth = "4";
-                    - } else if (startMonthNum === 4) {
-                    -     startMonth = "5";
-                    - } else if (startMonthNum === 5) {
-                    -     startMonth = "6";
-                    - } else if (startMonthNum === 6) {
-                    -     startMonth = "7";
-                    - } else if (startMonthNum === 7) {
-                    -     startMonth = "8";
-                    - } else if (startMonthNum === 8) {
-                    -     startMonth = "9";
-                    - } else if (startMonthNum === 9) {
-                    -     startMonth = "10";    
-                    - } else if (startMonthNum === 10) {
-                    -     startMonth = "11";
-                    - } else {
-                    -     startMonth = "12";
-                    - }
-                    - const startDateDisplay = startMonth + '/' + startDate;
 
-                    //- JAVASCRIPT ENDDATE
-                    - const endDateSaved = week.endDate;
-                    - const endDateISO = endDateSaved.toISOString().replace('.000Z', '');
-                    - const endDateFull = new Date(endDateISO);
-                    - const endYear = endDateFull.getFullYear();
-                    - const endMonthNum = endDateFull.getMonth();
-                    - const endDate = endDateFull.getDate();
-                    - if (endMonthNum === 0) {
-                    -     endMonth = "1";
-                    - } else if (endMonthNum === 1) {
-                    -     endMonth = "2";
-                    - } else if (endMonthNum === 2) {
-                    -     endMonth = "3";
-                    - } else if (endMonthNum === 3) {
-                    -     endMonth = "4";
-                    - } else if (endMonthNum === 4) {
-                    -     endMonth = "5";
-                    - } else if (endMonthNum === 5) {
-                    -     endMonth = "6";
-                    - } else if (endMonthNum === 6) {
-                    -     endMonth = "7";
-                    - } else if (endMonthNum === 7) {
-                    -     endMonth = "8";
-                    - } else if (endMonthNum === 8) {
-                    -     endMonth = "9";
-                    - } else if (endMonthNum === 9) {
-                    -     endMonth = "10";    
-                    - } else if (endMonthNum === 10) {
-                    -     endMonth = "11";
-                    - } else {
-                    -     endMonth = "12";
-                    - }
-                    - const endDateDisplay = endMonth + '/' + endDate;
+        //- if user
+        //-     - const currentUser = profile.initials.toLowerCase();
+        //-     h6 
+        
+  
+                //- ul
+                //-     each week in myVacation
 
-                    li= 'Week #' + week.weekNum + ' from ' + startDateDisplay + ' to ' + endDateDisplay
+                //-         - var startDate = week.startDate;
+                //-         - var startOffset = startDate.getTimezoneOffset() / 60;
+                //-         - var startHours = startDate.getHours();
+                //-         - var startHours = startHours + startOffset;
+                //-         - startDate.setHours(startHours,00,00);
+                //-         - var startDateData = startDate.toISOString();
+                //-         - var startMonth = startDate.getMonth() + 1;
+                //-         - var startDay = startDate.getDate();
+                //-         - var startDateDisplay = startMonth + '/' + startDay;
+
+                //-         - var endDate = week.endDate;
+                //-         - var endOffset = endDate.getTimezoneOffset() / 60;
+                //-         - var endHours = endDate.getHours();
+                //-         - var endHours = endHours + endOffset;
+                //-         - endDate.setHours(endHours,00,00);
+                //-         - var endDateData = endDate.toISOString();
+                //-         - var endMonth = endDate.getMonth() + 1;
+                //-         - var endDay = endDate.getDate();
+                //-         - var endDateDisplay = endMonth + '/' + endDay;
+
+                //-         li.vacation-mine= 'Week ' + week.weekNum + ' from ' + startDateDisplay + ' to ' + endDateDisplay
+        //- if uberUser
+        //-     .container
+        //-         - var array = [];
+        //-         each user in users 
+        //-             - array.push(user.initials);
+        //-         p.userArray2.text-light= array

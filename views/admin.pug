@@ -1,28 +1,83 @@
 extends layout 
 
 block content 
+    .container.p-4
+        table.table.table-striped.table-hover
+            thead 
+                tr 
+                    td.text-light= 'Users (' + users.length + ')'
+                    td.text-light Initials
+                    td.text-light Title
+                    td.text-light Email 
+                    td.text-light Phone #
+                    td.text-light Clearance
+                    //- td.text-light Edit 
+                    //- td.text-light Delete
+            tbody
+                each user in users 
+                    tr 
+                        td.text-light= user.firstName + ' ' + user.lastName
+                        td.text-light= user.initials 
+                        td.text-light= user.title 
+                        td.text-light= user.emailPrimary 
+                        td.text-light= user.phonePrimary 
+                        td.text-light= user.clearance
+
+                        //- -------TOO DANGEROUS TO USE!!!!! ----------
+
+                        //- td 
+                        //-     a.add(href=`/profileEdit/${user._id}`)
+                        //-         i(style="font-size: 1.5rem;").bi.bi-plus-square
+
+                        
+                        //- td
+                        //-     a.text-danger(href=`/profile/${user._id}/delete`)
+                        //-         i(style="font-size: 1.5rem;").bi.bi-x-square
+    .container.p-4 
+        .row
+            .col
+                h6.text-primary= 'Partners (' + partners.length + ')'
+                each partner in partners
+                    .partner.text-light= partner.firstName + ' ' + partner.lastName
+            .col
+                h6.text-success= 'Associates (' + associates.length + ')'
+                each associate in associates
+                    .associate.text-light= associate.firstName + ' ' + associate.lastName
+            .col
+                h6.text-warning= 'Employees (' + employees.length + ')'
+                each employee in employees
+                    .employee.text-light= employee.firstName + ' ' + employee.lastName
+            .col
+                h6.text-danger= 'Daytona (' + daytonas.length + ')'
+                each daytona in daytonas
+                    .daytona.text-light= daytona.firstName + ' ' + daytona.lastName
 
     .container.p-4
         h4.my-4= title
-        .row 
-            form.container.p-3(action='/adminProfileEdit' method="POST")
-                //- POST SPECIFIC USER TO FORM SO I CAN EDIT
-                .form-floating.mb-3
-                    select.form-select(type="text" name="user")
-                        each user in users 
-                            option(value=user._id)= user.firstName + ' ' + user.lastName
-                    label.form-label(for="specialty") Pick User to Edit
-                input.form-input.form-button(type="submit" value="Edit Selected User Profile ->")
+        //- .row 
+        //-     form.container.p-3(action='/adminProfileEdit' method="POST")
+        //-         //- POST SPECIFIC USER TO FORM SO I CAN EDIT
+        //-         .form-floating.mb-3
+        //-             select.form-select(type="text" name="user")
+        //-                 each user in users 
+        //-                     option(value=user._id)= user.firstName + ' ' + user.lastName
+        //-             label.form-label(for="specialty") Pick User to Edit
+        //-         input.form-input.form-button(type="submit" value="Edit Selected User Profile ->")
         
-        .row.my-4 
+        .row.my-1 
             a.form-button(href='/register') Register user
-        .row.my-4 
+        .row.my-1 
             a.form-button(href='/contactAdd') Add Contact
-        .row.my-4 
+        .row.my-1 
             a.form-button(href='/vacationAdd') Add Vacation
-        .row.my-4 
+        .row.my-1 
             a.form-button(href='/honeyBadgerAdd') Add Nighthawk
-        .row.my-4 
+        .row.my-1 
             a.form-button(href='/resourceAdd') Add Resource
-        .row.my-4
+        .row.my-1
+            a.form-button(href="/statsForm") Add Stats
+        .row.my-1
+            a.form-button(href="/stats") View Stats
+        .row.my-1
             a.form-button(href="/quoteGet") Add Quote
+

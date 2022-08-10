@@ -1,25 +1,28 @@
 mixin contactForm(contact = {})
 
-    form.container.p-3(action=`/contactAdd/${contact._id || ''}` method="POST" class="card")
+    form.container.p-3(action=`/contactAdd/${contact._id || ''}` method="POST")
         .mb-4
             - const divisions = ['Ocala', 'Daytona', 'USVI']
-            - const divisionTag = contact.division || []
-            label.form-label.fw-bold Division:
+            //- - const divisionTag = contact.division || []
+            - const divisionTag = contact.division || ''
+            label.form-label Division:
             .d-flex.flex-row.justify-content-start.align-items-center
                 each division in divisions 
                     .form-check.me-4
                         input#division.form-check-input(type="checkbox" value=division name="division" checked=(divisionTag.includes(division)))
                         label.form-check-label(for=division)= division
         .mb-4
-            label.form-label.fw-bold(for="site") Site name:
+            label.form-label(for="site") Site name:
             select.form-control(id="site", name='site', placeholder="Search sites...", aria-label="Site selection")
-                option(selected)= contact.site
+                if contact.site
+                    option(selected)= contact.site
                 option(value="Advanced Imaging Center") Advanced Imaging (AI)
                 option(value="Advent Hospital") Advent Hospital (AH)
                 option(value="Belleview ER") Belleview ER (Bravera)
                 option(value="Citrus Hills ER") Citrus Hills ER (Bravera)
                 option(value="Express Care") Express Care of Ocala (EC)
                 option(value="Heart of Florida") Heart of Florida (HOF)
+                option(value="Inverness Medical Imaging") Inverness Medical Imaging (IMI)
                 option(value="Maricamp ER") Maricamp ER (HCA)
                 option(value="Medical Imaging Center") Medical Imaging Center (MIC)
                 option(value="Ocala Regional Medical Center") Ocala Regional Medical Center (ORMC)
@@ -29,20 +32,23 @@ mixin contactForm(contact = {})
                 option(value="Timberridge ER") Timberridge ER (Advent)
                 option(value="Timberridge Imaging Center") Timberridge Imaging Center (TIC)
                 option(value="Trailwinds ER") Trailwinds ER (HCA)
+                option(value="Schneider Regional Medical Ctr") Schneider Regional Medical Center (USVI-ST)
+                option(value="Juan F. Luis Medical Center") Saint Croix Medical Center (USVI-SC)
                 option(value="Virgin Islands") US Virgin Islands (USVI)
                 option(value="West Marion Hospital") West Marion Hospital (WMH)
                 option(value="Women's Imaging Center") Women's Imaging Center (WIC)
-
         .mb-4
-            label.form-label.fw-bold(for='acronym') Site acronym:
+            label.form-label(for='acronym') Site acronym:
             select.form-control(id="acronym" name='acronym' placeholder="Search acronyms..." aria-label="Acronym selection")
-                option(selected)= contact.acronym
+                if contact.acronym
+                    option(selected)= contact.acronym
                 option(value="AI") AI (Advanced Imaging)
                 option(value="AH") AH (Advent Hospital)
                 option(value="BVER") BVER (Advent Belleview ER)
                 option(value="CHER") CHER (Bravera Citrus Hills ER)
                 option(value="EC") EC (Express Care of Ocala)
                 option(value="HOF") HOF (Heart of Florida)
+                option(value="IMI") IMI (Inverness Medical Imaging)
                 option(value="MCER") MCER (HCA Maricamp ER)
                 option(value="MIC") MIC (Medical Imaging Center)
                 option(value="ORMC") ORMC (Ocala Regional Medical Center)
@@ -52,37 +58,30 @@ mixin contactForm(contact = {})
                 option(value="TRER") TRER (Advent Timberridge ER)
                 option(value="TIC") TIC (Timberridge Imaging Center)
                 option(value="TWER") TWER (HCA Trailwinds ER)
-                option(value="USVI") USVI (US Virgin Islands)
+                option(value="USVIST") USVIST (Schneider Regional Medical Center)
+                option(value="USVISC") USVISC (Juan F. Luis Medical Center)
                 option(value="WMH") WMH (West Marion Hospital)
                 option(value="WIC") WIC (Women's Imaging Center)
         .mb-4
-            label.form-label.fw-bold(for="numLabel") Phone Number Label:
-            input.form-control(type="text" id="numLabel" name="numLabel" placeholder="Enter phone number label..." value=contact.numLabel)
-            
+            label.form-label(for="numLabel") Phone Number Label:
+            input.form-control(type="text" id="numLabel" name="numLabel" placeholder="Enter phone number label..." value=contact.numLabel || '')
         .mb-4
-            label.form-label.fw-bold(for="phoneNum") Phone number:
-            input.form-control.phone-number(type="tel" id="phoneNum" name="phoneNum" minlength="12" maxlength="12" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}$" onkeydown="phoneNumberFormatter()" placeholder="_ _ _-_ _ _-_ _ _ _" value=contact.phoneNum)
-        
-
-        //- .mb-4 
-        //-     label.form-label.fw-bold(for="phoneNum") Phone Number Intl: 
-        //-     input.form-control(type="tel" id="phoneNum" name="phoneNum" )
-        //-  Look into twilio intl-tel-input plugin for Internation format
-        
-
-
+            label.form-label(for="phoneNum") Phone number:
+            if contact.phoneNum
+                - var phoneNum = contact.phoneNum.replace(/^\+[0-9]/, '') || ''
+            input.form-control.phone-number(type="tel" id="phoneNum" name="phoneNum" minlength="12" maxlength="12" onkeydown="phoneNumberFormatter()" placeholder="_ _ _-_ _ _-_ _ _ _" value=phoneNum || '')
         .mb-4
-            - const tags = ['main', 'er', 'stroke', 'readingroom', 'radiology', 'it', 'staff', 'unit', 'administration']
+            - const tags = ['main', 'er', 'stroke', 'trauma', 'readingroom', 'radiology', 'it', 'staff', 'unit', 'administration']
             - const tagType = contact.tag || []
-            label.form-label.fw-bold Tag(s):
+            label.form-label Tag(s):
             .d-flex.flex-wrap.justify-content-start.align-items-center
                 each tag in tags
                     .form-check.me-4
                         input#tag.form-check-input(type="checkbox" value=tag name="tag" checked=(tagType.includes(tag)))
                         label.form-check-label(for=tag)= tag
         .mb-4 
-            label.form-label.fw-bold(for="index") Index
-            input.form-control(type="number" id="index" name="index" placeholder="Enter index #..." value=contact.index)
+            label.form-label(for="index") Index
+            input.form-control(type="number" id="index" name="index" placeholder="Enter index #..." value=contact.index || '')
             
 
         input.btn.btn-success(type="submit" value="Save Contact" class="button")

@@ -1,0 +1,26 @@
+mixin vacationUser
+    .my-container
+        .row.my-row
+            .my-header my Vacation 
+                span.ms-2.badge.bg-secondary= vacationUser.length
+            each week in vacationUser 
+                - var startDate = week.startDate;
+                - var startOffset = startDate.getTimezoneOffset() / 60;
+                - var startHours = startDate.getHours();
+                - var startHours = startHours + startOffset;
+                - startDate.setHours(startHours,00,00);
+                - var startDateData = startDate.toISOString();
+                - var startMonth = startDate.getMonth() + 1;
+                - var startDay = startDate.getDate();
+                - var startDateDisplay = startMonth + '/' + startDay;
+
+                - var endDate = week.endDate;
+                - var endOffset = endDate.getTimezoneOffset() / 60;
+                - var endHours = endDate.getHours();
+                - var endHours = endHours + endOffset;
+                - endDate.setHours(endHours,00,00);
+                - var endDateData = endDate.toISOString();
+                - var endMonth = endDate.getMonth() + 1;
+                - var endDay = endDate.getDate();
+                - var endDateDisplay = endMonth + '/' + endDay;
+                .my-body-row= 'Week ' + week.weekNum + ' from ' + startDateDisplay + ' to ' + endDateDisplay

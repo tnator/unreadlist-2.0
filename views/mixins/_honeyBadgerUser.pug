@@ -1,0 +1,12 @@
+mixin honeyBadgerUser
+    .my-container
+        .row.my-row
+            .my-header my Shifts
+                span.ms-2.badge.bg-secondary= shiftsUser.length
+            each shift in shiftsUser 
+                - var dateOptions = { month: 'numeric', day: 'numeric' };
+                - var timeOptions = { hour: 'numeric', minute: 'numeric' };
+                - var shiftDate = new Intl.DateTimeFormat('en-US', dateOptions).format(shift.startTime);
+                - var startTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.startTime);
+                - var endTime = new Intl.DateTimeFormat('en-US', timeOptions).format(shift.endTime);
+                .my-body-row= shiftDate + ' - ' + startTime + ' to ' + endTime

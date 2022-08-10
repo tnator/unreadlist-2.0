@@ -24,6 +24,7 @@ require('./models/siteModel');
 require('./models/reviewModel');
 require('./models/quoteModel');
 require('./models/honeyBadgerModel');
+require('./models/statsModel');
 
 // START APP !!!
 const app = require('./app');

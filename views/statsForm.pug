@@ -1,0 +1,20 @@
+extends layout 
+
+block content
+    form.container.p-3(action='/statsAdd' method="POST")
+        .form-floating.mb-3 
+            input.form-control(type="date" name="date" placeHolder="Shift date")
+            label.form-label(for="date") Date
+        - const positions = [ 'ormc', 'ormcir', 'wmh', 'ah', 'ahir', 'sr', 'mic', 'tic', 'wic', 'ai', '1p-9p', '2p-10p', '3p-11p', '4p-12a', '11p-7a' ]
+        each position in positions
+            .row
+                .col-6
+                    label.form-label(for=position.assigned)= position.toUpperCase() + ' assigned'
+                    select.form-control(id=position.assigned, name=position.assigned placeholder="Assigned")
+                        each rad in rads
+                            option(value=rad.initials)= rad.initials.toUpperCase()
+                .col-6
+                    label.form-label(for=position.rvu)= position.toUpperCase() + ' rvu'
+                    input.form-control(type="text" name=`${position}.rvu` placeHolder="Enter Total RVUs")
+            hr
+        input.btn.btn-warning(type="submit" value="Save Stats" class="button")
